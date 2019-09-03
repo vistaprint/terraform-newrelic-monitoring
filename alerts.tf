@@ -39,10 +39,10 @@ resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
   enabled     = true
 
   term {
-    duration      = 5 # s
+    duration      = var.error_rate_5xx_duration
     operator      = "above"
     priority      = "critical"
-    threshold     = "10" # percentage
+    threshold     = var.error_rate_5xx_threshold
     time_function = "all"
   }
 
@@ -53,7 +53,7 @@ resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
 
-    since_value = "3" # s
+    since_value = "3" # minutes
   }
 
   value_function = "single_value"
@@ -67,10 +67,10 @@ resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
   enabled     = true
 
   term {
-    duration      = 5 # s
+    duration      = var.high_latency_urgent_duration
     operator      = "above"
     priority      = "critical"
-    threshold     = "1000" # ms
+    threshold     = var.high_latency_urgent_threshold
     time_function = "all"
   }
 
@@ -81,7 +81,7 @@ resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
 
-    since_value = "3" # s
+    since_value = "3" # minutes
   }
 
   value_function = "single_value"
@@ -97,10 +97,10 @@ resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
   enabled     = true
 
   term {
-    duration      = 5 # s
+    duration      = var.error_rate_4xx_duration
     operator      = "above"
     priority      = "critical"
-    threshold     = "30" # percentage
+    threshold     = var.error_rate_4xx_threshold
     time_function = "all"
   }
 
@@ -111,7 +111,7 @@ resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
 
-    since_value = "3" # s
+    since_value = "3" # minutes
   }
 
   value_function = "single_value"
@@ -125,10 +125,10 @@ resource "newrelic_nrql_alert_condition" "high_latency_non_urgent" {
   enabled     = true
 
   term {
-    duration      = 5 # s
+    duration      = var.high_latency_non_urgent_duration
     operator      = "above"
     priority      = "critical"
-    threshold     = "1000" # ms
+    threshold     = var.high_latency_non_urgent_threshold
     time_function = "all"
   }
 
@@ -139,7 +139,7 @@ resource "newrelic_nrql_alert_condition" "high_latency_non_urgent" {
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
 
-    since_value = "3" # s
+    since_value = "3" # minutes
   }
 
   value_function = "single_value"
