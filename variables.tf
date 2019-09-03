@@ -48,3 +48,51 @@ variable "victorops_non_urgent_routing_key" {
   default     = null
   description = "Routing key where non-urgent notifications will be sent."
 }
+
+variable "error_rate_5xx_duration" {
+  type        = number
+  default     = 5
+  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
+}
+
+variable "error_rate_5xx_threshold" {
+  type        = number
+  default     = 10
+  description = "Error threshold (in percentage)"
+}
+
+variable "error_rate_4xx_duration" {
+  type        = number
+  default     = 5
+  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
+}
+
+variable "error_rate_4xx_threshold" {
+  type        = number
+  default     = 30
+  description = "Error threshold (in percentage)"
+}
+
+variable "high_latency_urgent_duration" {
+  type        = number
+  default     = 5
+  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
+}
+
+variable "high_latency_urgent_threshold" {
+  type        = number
+  default     = 1000
+  description = "Latency threshold (in milliseconds)"
+}
+
+variable "high_latency_non_urgent_duration" {
+  type        = number
+  default     = 5
+  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
+}
+
+variable "high_latency_non_urgent_threshold" {
+  type        = number
+  default     = 1000
+  description = "Latency threshold (in milliseconds)"
+}
