@@ -31,7 +31,39 @@ resource "newrelic_synthetics_alert_condition" "health_check" {
   runbook_url = var.runbook_url
 }
 
+resource "newrelic_nrql_alert_condition" "error_rate" {
+  count = var.error_rate_enable ? 1 : 0
+
+  policy_id = newrelic_alert_policy.urgent.id
+
+  name        = "Too many sustained errors"
+  runbook_url = var.runbook_url
+  enabled     = true
+
+  term {
+    duration      = var.error_rate_duration
+    operator      = "above"
+    priority      = "critical"
+    threshold     = var.error_rate_threshold
+    time_function = "all"
+  }
+
+  nrql {
+    query = <<-EOF
+        SELECT percentage(count(*), WHERE error IS TRUE)
+        FROM Transaction
+        WHERE appName = '${var.newrelic_fully_qualified_app_name}'
+        EOF
+
+    since_value = "3" # minutes
+  }
+
+  value_function = "single_value"
+}
+
 resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
+  count = var.error_rate_5xx_enable ? 1 : 0
+
   policy_id = newrelic_alert_policy.urgent.id
 
   name        = "Too many sustained 5xx errors"
@@ -90,6 +122,8 @@ resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
 # non-urgent conditions
 
 resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
+  count = var.error_rate_4xx_enable ? 1 : 0
+
   policy_id = newrelic_alert_policy.non_urgent.id
 
   name        = "Too many sustained 4xx errors"

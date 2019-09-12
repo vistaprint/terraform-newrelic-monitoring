@@ -49,6 +49,30 @@ variable "victorops_non_urgent_routing_key" {
   description = "Routing key where non-urgent notifications will be sent."
 }
 
+variable "error_rate_enable" {
+  type        = bool
+  default     = false
+  description = "Enable or disable error rate"
+}
+
+variable "error_rate_duration" {
+  type        = number
+  default     = 5
+  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
+}
+
+variable "error_rate_threshold" {
+  type        = number
+  default     = 10
+  description = "Error threshold (in percentage)"
+}
+
+variable "error_rate_5xx_enable" {
+  type        = bool
+  default     = true
+  description = "Enable or disable 5xx error rate"
+}
+
 variable "error_rate_5xx_duration" {
   type        = number
   default     = 5
@@ -59,6 +83,12 @@ variable "error_rate_5xx_threshold" {
   type        = number
   default     = 10
   description = "Error threshold (in percentage)"
+}
+
+variable "error_rate_4xx_enable" {
+  type        = bool
+  default     = true
+  description = "Enable or disable 4xx error rate"
 }
 
 variable "error_rate_4xx_duration" {
