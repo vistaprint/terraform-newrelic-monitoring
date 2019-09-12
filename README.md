@@ -11,7 +11,7 @@ provider "newrelic" {
 
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "0.0.2"
+  version = "0.0.3"
 
   newrelic_app_name                 = "Your app name"
   newrelic_fully_qualified_app_name = "Team/PRD/App"
@@ -29,11 +29,11 @@ See `variables.tf` for more information on the input variables that the module a
 ```hcl
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "0.0.2"
+  version = "0.0.3"
 
   # some fields ommitted (see previous example)
 
-  error_rate_5xx_duration  = 10 # minutes
-  error_rate_5xx_threshold = 5  # percentage
+  alert_error_rate_5xx_duration  = 10 # minutes
+  alert_error_rate_5xx_threshold = 5  # percentage
 }
 ```

@@ -13,4 +13,6 @@ module "newrelic_monitoring" {
   victorops_api_key                = var.victorops_api_key
   victorops_urgent_routing_key     = var.victorops_urgent_routing_key
   victorops_non_urgent_routing_key = var.victorops_non_urgent_routing_key
+
+  alert_error_rate_enable = true
 }
