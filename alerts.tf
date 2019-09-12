@@ -32,7 +32,7 @@ resource "newrelic_synthetics_alert_condition" "health_check" {
 }
 
 resource "newrelic_nrql_alert_condition" "error_rate" {
-  count = var.error_rate_enable ? 1 : 0
+  count = var.alert_error_rate_enable ? 1 : 0
 
   policy_id = newrelic_alert_policy.urgent.id
 
@@ -41,10 +41,10 @@ resource "newrelic_nrql_alert_condition" "error_rate" {
   enabled     = true
 
   term {
-    duration      = var.error_rate_duration
+    duration      = var.alert_error_rate_duration
     operator      = "above"
     priority      = "critical"
-    threshold     = var.error_rate_threshold
+    threshold     = var.alert_error_rate_threshold
     time_function = "all"
   }
 
@@ -62,7 +62,7 @@ resource "newrelic_nrql_alert_condition" "error_rate" {
 }
 
 resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
-  count = var.error_rate_5xx_enable ? 1 : 0
+  count = var.alert_error_rate_5xx_enable ? 1 : 0
 
   policy_id = newrelic_alert_policy.urgent.id
 
@@ -71,10 +71,10 @@ resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
   enabled     = true
 
   term {
-    duration      = var.error_rate_5xx_duration
+    duration      = var.alert_error_rate_5xx_duration
     operator      = "above"
     priority      = "critical"
-    threshold     = var.error_rate_5xx_threshold
+    threshold     = var.alert_error_rate_5xx_threshold
     time_function = "all"
   }
 
@@ -99,10 +99,10 @@ resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
   enabled     = true
 
   term {
-    duration      = var.high_latency_urgent_duration
+    duration      = var.alert_high_latency_urgent_duration
     operator      = "above"
     priority      = "critical"
-    threshold     = var.high_latency_urgent_threshold
+    threshold     = var.alert_high_latency_urgent_threshold
     time_function = "all"
   }
 
@@ -122,7 +122,7 @@ resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
 # non-urgent conditions
 
 resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
-  count = var.error_rate_4xx_enable ? 1 : 0
+  count = var.alert_error_rate_4xx_enable ? 1 : 0
 
   policy_id = newrelic_alert_policy.non_urgent.id
 
@@ -131,10 +131,10 @@ resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
   enabled     = true
 
   term {
-    duration      = var.error_rate_4xx_duration
+    duration      = var.alert_error_rate_4xx_duration
     operator      = "above"
     priority      = "critical"
-    threshold     = var.error_rate_4xx_threshold
+    threshold     = var.alert_error_rate_4xx_threshold
     time_function = "all"
   }
 
@@ -159,10 +159,10 @@ resource "newrelic_nrql_alert_condition" "high_latency_non_urgent" {
   enabled     = true
 
   term {
-    duration      = var.high_latency_non_urgent_duration
+    duration      = var.alert_high_latency_non_urgent_duration
     operator      = "above"
     priority      = "critical"
-    threshold     = var.high_latency_non_urgent_threshold
+    threshold     = var.alert_high_latency_non_urgent_threshold
     time_function = "all"
   }
 
