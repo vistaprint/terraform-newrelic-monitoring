@@ -1,4 +1,6 @@
 resource "newrelic_dashboard" "dashboard" {
+  count = var.enable_dashboard ? 1 : 0
+
   title = "${var.newrelic_app_name} Dashboard"
 
   widget {

@@ -11,11 +11,11 @@ provider "newrelic" {
 
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "0.0.3"
+  version = "0.0.4"
 
   newrelic_app_name                 = "Your app name"
   newrelic_fully_qualified_app_name = "Team/PRD/App"
-  service_url                       = "https://your-service-url.com"
+  service_healthcheck_url           = "https://your-service-url.com"
 
   enable_victorops_notifications   = true
   victorops_api_key                = "Your VictorOps API key"
@@ -29,7 +29,7 @@ See `variables.tf` for more information on the input variables that the module a
 ```hcl
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "0.0.3"
+  version = "0.0.4"
 
   # some fields ommitted (see previous example)
 

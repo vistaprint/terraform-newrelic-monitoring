@@ -14,15 +14,26 @@ variable "newrelic_fully_qualified_app_name" {
   description = "The name that the application was registered in New Relic with."
 }
 
-variable "service_url" {
+variable "service_healthcheck_url" {
   type        = string
-  description = "The URL of the service to be used for synthetics monitoring."
+  default     = null
+  description = <<-EOF
+    The URL of the service to be used for synthetics monitoring.
+
+    If undefined, no synthetics monitoring for the health check will be created.
+  EOF
 }
 
 variable "runbook_url" {
   type        = string
   default     = null
   description = "URL where the runbook is located."
+}
+
+variable "enable_dashboard" {
+  type        = bool
+  default     = false
+  description = "True if creating a custom dashboard is desired; false otherwise."
 }
 
 variable "enable_victorops_notifications" {
