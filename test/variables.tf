@@ -10,8 +10,9 @@ variable "newrelic_fully_qualified_app_name" {
   type = string
 }
 
-variable "service_url" {
-  type = string
+variable "service_healthcheck_url" {
+  type    = string
+  default = null
 }
 
 variable "runbook_url" {

@@ -13,9 +13,11 @@ resource "newrelic_alert_policy" "urgent" {
 # health check monitor
 
 resource "newrelic_synthetics_monitor" "health_check" {
+  count = var.service_healthcheck_url != null ? 1 : 0
+
   name      = "${var.newrelic_app_name} Health check"
   type      = "SIMPLE"
-  uri       = var.service_url
+  uri       = var.service_healthcheck_url
   frequency = 1
   status    = "ENABLED"
   locations = ["AWS_US_EAST_1", "AWS_US_WEST_1", "AWS_EU_WEST_1", "AWS_EU_WEST_3", "AWS_AP_NORTHEAST_1", "AWS_AP_SOUTHEAST_2"]
@@ -24,10 +26,12 @@ resource "newrelic_synthetics_monitor" "health_check" {
 # urgent conditions
 
 resource "newrelic_synthetics_alert_condition" "health_check" {
+  count = var.service_healthcheck_url != null ? 1 : 0
+
   policy_id = newrelic_alert_policy.urgent.id
 
   name        = "Health check"
-  monitor_id  = newrelic_synthetics_monitor.health_check.id
+  monitor_id  = newrelic_synthetics_monitor.health_check.0.id
   runbook_url = var.runbook_url
 }
 
