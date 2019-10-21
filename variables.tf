@@ -137,3 +137,16 @@ variable "alert_high_latency_non_urgent_threshold" {
   default     = 1000
   description = "Latency threshold (in milliseconds)"
 }
+
+variable "response_status_variable_name" {
+  type        = string
+  default     = "response.status"
+  description = <<-EOF
+    Name of the variable containing the response status in a transaction.
+
+    Different New Relic agents seem to use different names for the variable
+    containing the response status. `response.status` and `httpResponseCode`
+    seem to be the names used by most agents. Set this variable to override
+    the default value.
+  EOF
+}
