@@ -49,8 +49,8 @@ resource "newrelic_dashboard" "dashboard" {
     nrql          = <<-EOF
         SELECT 
             percentage(count(*), WHERE error is true) AS 'Total error rate',
-            percentage(count(*), WHERE response.status LIKE '5%') AS '5xx error rate',
-            percentage(count(*), WHERE response.status LIKE '4%') AS '4xx error rate'
+            percentage(count(*), WHERE ${var.response_status_variable_name} LIKE '5%') AS '5xx error rate',
+            percentage(count(*), WHERE ${var.response_status_variable_name} LIKE '4%') AS '4xx error rate'
         FROM Transaction 
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         TIMESERIES 5 minutes
