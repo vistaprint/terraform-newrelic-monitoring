@@ -11,7 +11,7 @@ provider "newrelic" {
 
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "0.0.4"
+  version = "0.0.5"
 
   newrelic_app_name                 = "Your app name"
   newrelic_fully_qualified_app_name = "Team/PRD/App"
