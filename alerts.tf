@@ -54,7 +54,7 @@ resource "newrelic_nrql_alert_condition" "error_rate" {
 
   nrql {
     query = <<-EOF
-        SELECT percentage(count(*), WHERE error IS TRUE)
+        SELECT 100 * (filter(count(*), WHERE error IS TRUE)/(count(*) + 1e-10)) as Percentage
         FROM Transaction
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
@@ -84,7 +84,7 @@ resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
 
   nrql {
     query = <<-EOF
-        SELECT percentage(count(*), WHERE ${var.response_status_variable_name} LIKE '5%')
+        SELECT 100 * (filter(count(*), WHERE ${var.response_status_variable_name} LIKE '5%')/(count(*) + 1e-10)) as Percentage
         FROM Transaction
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
@@ -144,7 +144,7 @@ resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
 
   nrql {
     query = <<-EOF
-        SELECT percentage(count(*), WHERE ${var.response_status_variable_name} LIKE '4%')
+        SELECT 100 * (filter(count(*), WHERE ${var.response_status_variable_name} LIKE '4%')/(count(*) + 1e-10)) as Percentage
         FROM Transaction
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
