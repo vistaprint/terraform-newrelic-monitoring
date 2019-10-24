@@ -52,6 +52,15 @@ resource "newrelic_nrql_alert_condition" "error_rate" {
     time_function = "all"
   }
 
+  # The percentage operation defined by percentage(count(*), WHERE httpResponseCode LIKE '4%')
+  # could be represented as the following:
+  #
+  # Transaction events with 4xx status code
+  # ––––––––––––––––––––––––––––––––––––––
+  #     Transaction events (overall)
+  #
+  # So when all events drop off, the operation ends up as 0 / 0, which returns NULL.
+  # To help avoid this problem, we need to write a query that ensures the denominator is always a non-zero value.
   nrql {
     query = <<-EOF
         SELECT 100 * (filter(count(*), WHERE error IS TRUE)/(count(*) + 1e-10)) as Percentage
@@ -82,6 +91,15 @@ resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
     time_function = "all"
   }
 
+  # The percentage operation defined by percentage(count(*), WHERE httpResponseCode LIKE '4%')
+  # could be represented as the following:
+  #
+  # Transaction events with 4xx status code
+  # ––––––––––––––––––––––––––––––––––––––
+  #     Transaction events (overall)
+  #
+  # So when all events drop off, the operation ends up as 0 / 0, which returns NULL.
+  # To help avoid this problem, we need to write a query that ensures the denominator is always a non-zero value.
   nrql {
     query = <<-EOF
         SELECT 100 * (filter(count(*), WHERE ${var.response_status_variable_name} LIKE '5%')/(count(*) + 1e-10)) as Percentage
@@ -142,6 +160,15 @@ resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
     time_function = "all"
   }
 
+  # The percentage operation defined by percentage(count(*), WHERE httpResponseCode LIKE '4%')
+  # could be represented as the following:
+  #
+  # Transaction events with 4xx status code
+  # ––––––––––––––––––––––––––––––––––––––
+  #     Transaction events (overall)
+  #
+  # So when all events drop off, the operation ends up as 0 / 0, which returns NULL.
+  # To help avoid this problem, we need to write a query that ensures the denominator is always a non-zero value.
   nrql {
     query = <<-EOF
         SELECT 100 * (filter(count(*), WHERE ${var.response_status_variable_name} LIKE '4%')/(count(*) + 1e-10)) as Percentage
