@@ -52,18 +52,19 @@ resource "newrelic_nrql_alert_condition" "error_rate" {
     time_function = "all"
   }
 
-  # The percentage operation defined by percentage(count(*), WHERE httpResponseCode LIKE '4%')
-  # could be represented as the following:
+  # The operation 'percentage(count(*), WHERE error IS TRUE)' can be represented as follows:
   #
-  # Transaction events with 4xx status code
-  # ––––––––––––––––––––––––––––––––––––––
-  #     Transaction events (overall)
+  # Transaction events with error
+  # –––––––––––––––––––––––––––––
+  # Transaction events (overall)
   #
-  # So when all events drop off, the operation ends up as 0 / 0, which returns NULL.
-  # To help avoid this problem, we need to write a query that ensures the denominator is always a non-zero value.
+  # For intervals with no events the operation ends up being 0 / 0, which returns NULL.
+  # To avoid this problem we use a query that ensures the denominator is always a non-zero value.
   nrql {
     query = <<-EOF
-        SELECT 100 * (filter(count(*), WHERE error IS TRUE)/(count(*) + 1e-10)) as Percentage
+        SELECT 100 * (
+          filter(count(*), WHERE error IS TRUE) / (count(*) + 1e-10)
+        ) as Percentage
         FROM Transaction
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
@@ -91,18 +92,19 @@ resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
     time_function = "all"
   }
 
-  # The percentage operation defined by percentage(count(*), WHERE httpResponseCode LIKE '4%')
-  # could be represented as the following:
+  # The operation 'percentage(count(*), WHERE response.status LIKE '5%')' can be represented as follows:
   #
-  # Transaction events with 4xx status code
+  # Transaction events with 5xx status code
   # ––––––––––––––––––––––––––––––––––––––
   #     Transaction events (overall)
   #
-  # So when all events drop off, the operation ends up as 0 / 0, which returns NULL.
-  # To help avoid this problem, we need to write a query that ensures the denominator is always a non-zero value.
+  # For intervals with no events the operation ends up being 0 / 0, which returns NULL.
+  # To avoid this problem we use a query that ensures the denominator is always a non-zero value.
   nrql {
     query = <<-EOF
-        SELECT 100 * (filter(count(*), WHERE ${var.response_status_variable_name} LIKE '5%')/(count(*) + 1e-10)) as Percentage
+        SELECT 100 * (
+          filter(count(*), WHERE ${var.response_status_variable_name} LIKE '5%') / (count(*) + 1e-10)
+        ) as Percentage
         FROM Transaction
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
@@ -160,18 +162,19 @@ resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
     time_function = "all"
   }
 
-  # The percentage operation defined by percentage(count(*), WHERE httpResponseCode LIKE '4%')
-  # could be represented as the following:
+  # The operation 'percentage(count(*), WHERE response.status LIKE '4%')' can be represented as follows:
   #
   # Transaction events with 4xx status code
   # ––––––––––––––––––––––––––––––––––––––
   #     Transaction events (overall)
   #
-  # So when all events drop off, the operation ends up as 0 / 0, which returns NULL.
-  # To help avoid this problem, we need to write a query that ensures the denominator is always a non-zero value.
+  # For intervals with no events the operation ends up being 0 / 0, which returns NULL.
+  # To avoid this problem we use a query that ensures the denominator is always a non-zero value.
   nrql {
     query = <<-EOF
-        SELECT 100 * (filter(count(*), WHERE ${var.response_status_variable_name} LIKE '4%')/(count(*) + 1e-10)) as Percentage
+        SELECT 100 * (
+          filter(count(*), WHERE ${var.response_status_variable_name} LIKE '4%') / (count(*) + 1e-10)
+        ) as Percentage
         FROM Transaction
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
