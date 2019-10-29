@@ -1,20 +1,9 @@
-variable "newrelic_app_name" {
-  type        = string
-  description = <<-EOF
-    The name of the application to monitor.
-
-    This field is used to name the resources that will be created by Terraform,
-    not to filter metrics in New Relic. Use newrelic_fully_qualified_app_name
-    for that.
-  EOF
-}
-
 variable "newrelic_fully_qualified_app_name" {
   type        = string
   description = "The name that the application was registered in New Relic with."
 }
 
-variable "service_healthcheck_url" {
+variable "synthetics_monitor_health_endpoint_url" {
   type        = string
   default     = null
   description = <<-EOF
@@ -22,6 +11,18 @@ variable "service_healthcheck_url" {
 
     If undefined, no synthetics monitoring for the health check will be created.
   EOF
+}
+
+variable "synthetics_monitor_bypass_head_request" {
+  type        = string
+  default     = true
+  description = "Bypass HEAD request for monitor checks (true/false)."
+}
+
+variable "synthetics_monitor_frequency" {
+  type        = string
+  default     = 1
+  description = "The interval (in minutes) at which this monitor should run."
 }
 
 variable "runbook_url" {
@@ -149,16 +150,4 @@ variable "response_status_variable_name" {
     seem to be the names used by most agents. Set this variable to override
     the default value.
   EOF
-}
-
-variable "bypass_head_request" {
-  type        = string
-  default     = true
-  description = "Bypass HEAD request for monitor checks (true/false)."
-}
-
-variable "monitor_frequency" {
-  type        = string
-  default     = 1
-  description = "The interval (in minutes) at which this monitor should run."
 }

@@ -1,7 +1,7 @@
 resource "newrelic_alert_channel" "victorops_non_urgent" {
   count = var.enable_victorops_notifications ? 1 : 0
 
-  name = "${var.newrelic_app_name} Non Urgent"
+  name = "${var.newrelic_fully_qualified_app_name} Non Urgent"
   type = "victorops"
 
   configuration = {
@@ -13,7 +13,7 @@ resource "newrelic_alert_channel" "victorops_non_urgent" {
 resource "newrelic_alert_channel" "victorops_urgent" {
   count = var.enable_victorops_notifications ? 1 : 0
 
-  name = "${var.newrelic_app_name} Urgent"
+  name = "${var.newrelic_fully_qualified_app_name} Urgent"
   type = "victorops"
 
   configuration = {

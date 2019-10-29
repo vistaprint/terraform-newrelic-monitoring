@@ -2,15 +2,11 @@ variable "newrelic_api_key" {
   type = string
 }
 
-variable "newrelic_app_name" {
-  type = string
-}
-
 variable "newrelic_fully_qualified_app_name" {
   type = string
 }
 
-variable "service_healthcheck_url" {
+variable "synthetics_monitor_health_endpoint_url" {
   type    = string
   default = null
 }

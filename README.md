@@ -13,9 +13,8 @@ module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
   version = "0.0.6"
 
-  newrelic_app_name                 = "Your app name"
   newrelic_fully_qualified_app_name = "Team/PRD/App"
-  service_healthcheck_url           = "https://your-service-url.com"
+  synthetics_monitor_health_endpoint_url           = "https://your-service-url.com"
 
   enable_victorops_notifications   = true
   enable_dashboard                 = true
