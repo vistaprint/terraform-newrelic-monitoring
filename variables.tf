@@ -33,13 +33,13 @@ variable "runbook_url" {
 variable "enable_dashboard" {
   type        = bool
   default     = false
-  description = "True if creating a custom dashboard is desired; false otherwise. Default: false"
+  description = "True if creating a custom dashboard is desired; false otherwise."
 }
 
 variable "enable_victorops_notifications" {
   type        = bool
   default     = false
-  description = "True if VictorOps notifications are desired; false otherwise. Default: false"
+  description = "True if VictorOps notifications are desired; false otherwise."
 }
 
 variable "victorops_api_key" {
@@ -63,79 +63,79 @@ variable "victorops_non_urgent_routing_key" {
 variable "alert_error_rate_enable" {
   type        = bool
   default     = false
-  description = "Enable or disable error rate alert. Default: false"
+  description = "Enable or disable error rate alert"
 }
 
 variable "alert_error_rate_duration" {
   type        = number
   default     = 5
-  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes). Default: 5"
+  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
 }
 
 variable "alert_error_rate_threshold" {
   type        = number
   default     = 10
-  description = "Error threshold (in percentage). Default: 10"
+  description = "Error threshold (in percentage)"
 }
 
 variable "alert_error_rate_5xx_enable" {
   type        = bool
   default     = true
-  description = "Enable or disable 5xx error rate alert. Default: true"
+  description = "Enable or disable 5xx error rate alert"
 }
 
 variable "alert_error_rate_5xx_duration" {
   type        = number
   default     = 5
-  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes). Default: 5"
+  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
 }
 
 variable "alert_error_rate_5xx_threshold" {
   type        = number
   default     = 10
-  description = "Error threshold (in percentage). Default: 10"
+  description = "Error threshold (in percentage)"
 }
 
 variable "alert_error_rate_4xx_enable" {
   type        = bool
   default     = true
-  description = "Enable or disable 4xx error rate alert. Default: true"
+  description = "Enable or disable 4xx error rate alert"
 }
 
 variable "alert_error_rate_4xx_duration" {
   type        = number
   default     = 5
-  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes). Default: 5"
+  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
 }
 
 variable "alert_error_rate_4xx_threshold" {
   type        = number
   default     = 30
-  description = "Error threshold (in percentage). Default: 30"
+  description = "Error threshold (in percentage)"
 }
 
 variable "alert_high_latency_urgent_duration" {
   type        = number
   default     = 5
-  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes). Default: 5"
+  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
 }
 
 variable "alert_high_latency_urgent_threshold" {
   type        = number
   default     = 1000
-  description = "Latency threshold (in milliseconds). Default: 1000"
+  description = "Latency threshold (in milliseconds)"
 }
 
 variable "alert_high_latency_non_urgent_duration" {
   type        = number
   default     = 5
-  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes). Default: 5"
+  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
 }
 
 variable "alert_high_latency_non_urgent_threshold" {
   type        = number
   default     = 1000
-  description = "Latency threshold (in milliseconds). Default: 1000"
+  description = "Latency threshold (in milliseconds)"
 }
 
 variable "response_status_variable_name" {
@@ -154,11 +154,11 @@ variable "response_status_variable_name" {
 variable "bypass_head_request" {
   type        = string
   default     = true
-  description = "Bypass HEAD request for monitor checks (true/false). Default: true"
+  description = "Bypass HEAD request for monitor checks (true/false)."
 }
 
 variable "monitor_frequency" {
   type        = string
   default     = 1
-  description = "The interval (in minutes) at which this monitor should run. Default: 1"
+  description = "The interval (in minutes) at which this monitor should run."
 }
