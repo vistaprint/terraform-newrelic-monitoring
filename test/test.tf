@@ -5,10 +5,9 @@ provider "newrelic" {
 module "newrelic_monitoring" {
   source = "../"
 
-  newrelic_app_name                 = var.newrelic_app_name
   newrelic_fully_qualified_app_name = var.newrelic_fully_qualified_app_name
 
-  service_healthcheck_url = var.service_healthcheck_url
+  synthetics_monitor_health_endpoint_url = var.synthetics_monitor_health_endpoint_url
   enable_dashboard        = true
 
   enable_victorops_notifications   = true

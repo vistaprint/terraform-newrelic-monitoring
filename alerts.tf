@@ -3,30 +3,31 @@ data "newrelic_application" "app" {
 }
 
 resource "newrelic_alert_policy" "non_urgent" {
-  name = "${var.newrelic_app_name} Non Urgent"
+  name = "${var.newrelic_fully_qualified_app_name} Non Urgent"
 }
 
 resource "newrelic_alert_policy" "urgent" {
-  name = "${var.newrelic_app_name} Urgent"
+  name = "${var.newrelic_fully_qualified_app_name} Urgent"
 }
 
 # health check monitor
 
 resource "newrelic_synthetics_monitor" "health_check" {
-  count = var.service_healthcheck_url != null ? 1 : 0
+  count = var.synthetics_monitor_health_endpoint_url != null ? 1 : 0
 
-  name      = "${var.newrelic_app_name} Health check"
-  type      = "SIMPLE"
-  uri       = var.service_healthcheck_url
-  frequency = 1
-  status    = "ENABLED"
-  locations = ["AWS_US_EAST_1", "AWS_US_WEST_1", "AWS_EU_WEST_1", "AWS_EU_WEST_3", "AWS_AP_NORTHEAST_1", "AWS_AP_SOUTHEAST_2"]
+  name                = "${var.newrelic_fully_qualified_app_name}"
+  type                = "SIMPLE"
+  uri                 = var.synthetics_monitor_health_endpoint_url
+  frequency           = var.synthetics_monitor_frequency
+  status              = "ENABLED"
+  locations           = ["AWS_US_EAST_1", "AWS_US_WEST_1", "AWS_EU_WEST_1", "AWS_EU_WEST_3", "AWS_AP_NORTHEAST_1", "AWS_AP_SOUTHEAST_2"]
+  bypass_head_request = var.synthetics_monitor_bypass_head_request
 }
 
 # urgent conditions
 
 resource "newrelic_synthetics_alert_condition" "health_check" {
-  count = var.service_healthcheck_url != null ? 1 : 0
+  count = var.synthetics_monitor_health_endpoint_url != null ? 1 : 0
 
   policy_id = newrelic_alert_policy.urgent.id
 
