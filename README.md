@@ -13,14 +13,14 @@ module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
   version = "0.0.6"
 
-  newrelic_fully_qualified_app_name = "Team/PRD/App"
-  synthetics_monitor_health_endpoint_url           = "https://your-service-url.com"
+  newrelic_fully_qualified_app_name       = "Team/PRD/App"
+  synthetics_monitor_health_endpoint_url  = "https://your-service-url.com"
 
-  enable_victorops_notifications   = true
-  enable_dashboard                 = true
-  victorops_api_key                = "Your VictorOps API key"
-  victorops_urgent_routing_key     = "your-team-urgent"
-  victorops_non_urgent_routing_key = "your-team-non-urgent"
+  enable_victorops_notifications          = true
+  enable_dashboard                        = true
+  victorops_api_key                       = "Your VictorOps API key"
+  victorops_urgent_routing_key            = "your-team-urgent"
+  victorops_non_urgent_routing_key        = "your-team-non-urgent"
 }
 ```
 

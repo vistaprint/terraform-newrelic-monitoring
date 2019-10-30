@@ -15,12 +15,12 @@ resource "newrelic_alert_policy" "urgent" {
 resource "newrelic_synthetics_monitor" "health_check" {
   count = var.synthetics_monitor_health_endpoint_url != null ? 1 : 0
 
-  name      = "${var.newrelic_fully_qualified_app_name}"
-  type      = "SIMPLE"
-  uri       = var.synthetics_monitor_health_endpoint_url
-  frequency = var.synthetics_monitor_frequency
-  status    = "ENABLED"
-  locations = ["AWS_US_EAST_1", "AWS_US_WEST_1", "AWS_EU_WEST_1", "AWS_EU_WEST_3", "AWS_AP_NORTHEAST_1", "AWS_AP_SOUTHEAST_2"]
+  name                = "${var.newrelic_fully_qualified_app_name}"
+  type                = "SIMPLE"
+  uri                 = var.synthetics_monitor_health_endpoint_url
+  frequency           = var.synthetics_monitor_frequency
+  status              = "ENABLED"
+  locations           = ["AWS_US_EAST_1", "AWS_US_WEST_1", "AWS_EU_WEST_1", "AWS_EU_WEST_3", "AWS_AP_NORTHEAST_1", "AWS_AP_SOUTHEAST_2"]
   bypass_head_request = var.synthetics_monitor_bypass_head_request
 }
 
