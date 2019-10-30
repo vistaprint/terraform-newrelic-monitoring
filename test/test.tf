@@ -4,7 +4,7 @@ provider "newrelic" {
 
 module "newrelic_monitoring" {
   source = "../"
-  
+
   newrelic_fully_qualified_app_name = var.newrelic_fully_qualified_app_name
 
   synthetics_monitor_health_endpoint_url = var.synthetics_monitor_health_endpoint_url
