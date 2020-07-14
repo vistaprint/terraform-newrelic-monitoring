@@ -14,7 +14,7 @@ provider "newrelic" {
 
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "0.0.7"
+  version = "0.1.0"
 
   newrelic_account_id = Your New Relic account id
 
@@ -34,7 +34,7 @@ See `variables.tf` for more information on the input variables that the module a
 ```hcl
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "0.0.7"
+  version = "0.1.0"
 
   # some fields ommitted (see previous example)
 
