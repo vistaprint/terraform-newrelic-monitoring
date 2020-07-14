@@ -6,12 +6,17 @@ This [Terraform](https://www.terraform.io) module creates [New Relic](https://ne
 
 ```hcl
 provider "newrelic" {
-  api_key = "Your New Relic API key"
+  account_id    = Your New Relic account id
+  api_key       = "Your New Relic API key"
+  admin_api_key = "Your New Relic admin API key"
+  region        = "Your New Relic account region (US or EU)"
 }
 
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "0.0.6"
+  version = "0.0.7"
+
+  newrelic_account_id = Your New Relic account id
 
   newrelic_app_name                 = "Your app name"
   newrelic_fully_qualified_app_name = "Team/PRD/App"
@@ -29,11 +34,15 @@ See `variables.tf` for more information on the input variables that the module a
 ```hcl
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "0.0.6"
+  version = "0.0.7"
 
   # some fields ommitted (see previous example)
 
-  alert_error_rate_5xx_duration  = 10 # minutes
+  alert_error_rate_5xx_duration  = 600 # seconds
   alert_error_rate_5xx_threshold = 5  # percentage
 }
 ```
+
+## Known Issues
+
+The New Relic provider has an issue managing alert channels. The API does not return some fields in the config block (e.g., the VictorOps API key) when doing a read operation, as they are sensitive values. Thus, Terraform tries to set the key again when running the apply command. This forces recreating the resource even if it is not required. The issue is tracked [here](https://github.com/newrelic/terraform-provider-newrelic/issues/420).

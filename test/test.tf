@@ -1,9 +1,14 @@
 provider "newrelic" {
-  api_key = var.newrelic_api_key
+  account_id    = var.newrelic_account_id
+  api_key       = var.newrelic_api_key
+  admin_api_key = var.newrelic_admin_api_key
+  region        = var.newrelic_region
 }
 
 module "newrelic_monitoring" {
   source = "../"
+
+  newrelic_account_id = var.newrelic_account_id
 
   newrelic_app_name                 = var.newrelic_app_name
   newrelic_fully_qualified_app_name = var.newrelic_fully_qualified_app_name
