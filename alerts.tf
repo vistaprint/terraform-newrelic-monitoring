@@ -1,13 +1,16 @@
-data "newrelic_application" "app" {
+data "newrelic_entity" "app" {
   name = var.newrelic_fully_qualified_app_name
+  type = "APPLICATION"
 }
 
 resource "newrelic_alert_policy" "non_urgent" {
-  name = "${var.newrelic_app_name} Non Urgent"
+  account_id = var.newrelic_account_id
+  name       = "${var.newrelic_app_name} Non Urgent"
 }
 
 resource "newrelic_alert_policy" "urgent" {
-  name = "${var.newrelic_app_name} Urgent"
+  account_id = var.newrelic_account_id
+  name       = "${var.newrelic_app_name} Urgent"
 }
 
 # health check monitor
@@ -38,18 +41,20 @@ resource "newrelic_synthetics_alert_condition" "health_check" {
 resource "newrelic_nrql_alert_condition" "error_rate" {
   count = var.alert_error_rate_enable ? 1 : 0
 
-  policy_id = newrelic_alert_policy.urgent.id
+  account_id = var.newrelic_account_id
+  policy_id  = newrelic_alert_policy.urgent.id
 
-  name        = "Too many sustained errors"
-  runbook_url = var.runbook_url
-  enabled     = true
+  name                 = "Too many sustained errors"
+  runbook_url          = var.runbook_url
+  enabled              = true
+  value_function       = "single_value"
+  violation_time_limit = "TWENTY_FOUR_HOURS"
 
-  term {
-    duration      = var.alert_error_rate_duration
-    operator      = "above"
-    priority      = "critical"
-    threshold     = var.alert_error_rate_threshold
-    time_function = "all"
+  critical {
+    operator              = "above"
+    threshold             = var.alert_error_rate_threshold
+    threshold_duration    = var.alert_error_rate_duration
+    threshold_occurrences = "ALL"
   }
 
   # The operation 'percentage(count(*), WHERE error IS TRUE)' can be represented as follows:
@@ -71,25 +76,25 @@ resource "newrelic_nrql_alert_condition" "error_rate" {
 
     since_value = "3" # minutes
   }
-
-  value_function = "single_value"
 }
 
 resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
   count = var.alert_error_rate_5xx_enable ? 1 : 0
 
-  policy_id = newrelic_alert_policy.urgent.id
+  account_id = var.newrelic_account_id
+  policy_id  = newrelic_alert_policy.urgent.id
 
-  name        = "Too many sustained 5xx errors"
-  runbook_url = var.runbook_url
-  enabled     = true
+  name                 = "Too many sustained 5xx errors"
+  runbook_url          = var.runbook_url
+  enabled              = true
+  value_function       = "single_value"
+  violation_time_limit = "TWENTY_FOUR_HOURS"
 
-  term {
-    duration      = var.alert_error_rate_5xx_duration
-    operator      = "above"
-    priority      = "critical"
-    threshold     = var.alert_error_rate_5xx_threshold
-    time_function = "all"
+  critical {
+    operator              = "above"
+    threshold             = var.alert_error_rate_5xx_threshold
+    threshold_duration    = var.alert_error_rate_5xx_duration
+    threshold_occurrences = "ALL"
   }
 
   # The operation 'percentage(count(*), WHERE response.status LIKE '5%')' can be represented as follows:
@@ -111,23 +116,23 @@ resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
 
     since_value = "3" # minutes
   }
-
-  value_function = "single_value"
 }
 
 resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
-  policy_id = newrelic_alert_policy.urgent.id
+  account_id = var.newrelic_account_id
+  policy_id  = newrelic_alert_policy.urgent.id
 
-  name        = "High latency for 50% of requests"
-  runbook_url = var.runbook_url
-  enabled     = true
+  name                 = "High latency for 50% of requests"
+  runbook_url          = var.runbook_url
+  enabled              = true
+  value_function       = "single_value"
+  violation_time_limit = "TWENTY_FOUR_HOURS"
 
-  term {
-    duration      = var.alert_high_latency_urgent_duration
-    operator      = "above"
-    priority      = "critical"
-    threshold     = var.alert_high_latency_urgent_threshold
-    time_function = "all"
+  critical {
+    operator              = "above"
+    threshold             = var.alert_high_latency_urgent_threshold
+    threshold_duration    = var.alert_high_latency_urgent_duration
+    threshold_occurrences = "ALL"
   }
 
   nrql {
@@ -139,8 +144,6 @@ resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
 
     since_value = "3" # minutes
   }
-
-  value_function = "single_value"
 }
 
 # non-urgent conditions
@@ -148,18 +151,20 @@ resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
 resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
   count = var.alert_error_rate_4xx_enable ? 1 : 0
 
-  policy_id = newrelic_alert_policy.non_urgent.id
+  account_id = var.newrelic_account_id
+  policy_id  = newrelic_alert_policy.non_urgent.id
 
-  name        = "Too many sustained 4xx errors"
-  runbook_url = var.runbook_url
-  enabled     = true
+  name                 = "Too many sustained 4xx errors"
+  runbook_url          = var.runbook_url
+  enabled              = true
+  value_function       = "single_value"
+  violation_time_limit = "TWENTY_FOUR_HOURS"
 
-  term {
-    duration      = var.alert_error_rate_4xx_duration
-    operator      = "above"
-    priority      = "critical"
-    threshold     = var.alert_error_rate_4xx_threshold
-    time_function = "all"
+  critical {
+    operator              = "above"
+    threshold             = var.alert_error_rate_4xx_threshold
+    threshold_duration    = var.alert_error_rate_4xx_duration
+    threshold_occurrences = "ALL"
   }
 
   # The operation 'percentage(count(*), WHERE response.status LIKE '4%')' can be represented as follows:
@@ -181,23 +186,23 @@ resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
 
     since_value = "3" # minutes
   }
-
-  value_function = "single_value"
 }
 
 resource "newrelic_nrql_alert_condition" "high_latency_non_urgent" {
-  policy_id = newrelic_alert_policy.non_urgent.id
+  account_id = var.newrelic_account_id
+  policy_id  = newrelic_alert_policy.non_urgent.id
 
-  name        = "High latency for 1% of requests"
-  runbook_url = var.runbook_url
-  enabled     = true
+  name                 = "High latency for 1% of requests"
+  runbook_url          = var.runbook_url
+  enabled              = true
+  value_function       = "single_value"
+  violation_time_limit = "TWENTY_FOUR_HOURS"
 
-  term {
-    duration      = var.alert_high_latency_non_urgent_duration
-    operator      = "above"
-    priority      = "critical"
-    threshold     = var.alert_high_latency_non_urgent_threshold
-    time_function = "all"
+  critical {
+    operator              = "above"
+    threshold             = var.alert_high_latency_non_urgent_threshold
+    threshold_duration    = var.alert_high_latency_non_urgent_duration
+    threshold_occurrences = "ALL"
   }
 
   nrql {
@@ -209,6 +214,4 @@ resource "newrelic_nrql_alert_condition" "high_latency_non_urgent" {
 
     since_value = "3" # minutes
   }
-
-  value_function = "single_value"
 }

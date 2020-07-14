@@ -1,3 +1,8 @@
+variable "newrelic_account_id" {
+  type        = number
+  description = "New Relic Account Id"
+}
+
 variable "newrelic_app_name" {
   type        = string
   description = <<-EOF
@@ -68,8 +73,8 @@ variable "alert_error_rate_enable" {
 
 variable "alert_error_rate_duration" {
   type        = number
-  default     = 5
-  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
+  default     = 300
+  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
 }
 
 variable "alert_error_rate_threshold" {
@@ -86,8 +91,8 @@ variable "alert_error_rate_5xx_enable" {
 
 variable "alert_error_rate_5xx_duration" {
   type        = number
-  default     = 5
-  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
+  default     = 300
+  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
 }
 
 variable "alert_error_rate_5xx_threshold" {
@@ -104,8 +109,8 @@ variable "alert_error_rate_4xx_enable" {
 
 variable "alert_error_rate_4xx_duration" {
   type        = number
-  default     = 5
-  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
+  default     = 300
+  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
 }
 
 variable "alert_error_rate_4xx_threshold" {
@@ -116,8 +121,8 @@ variable "alert_error_rate_4xx_threshold" {
 
 variable "alert_high_latency_urgent_duration" {
   type        = number
-  default     = 5
-  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
+  default     = 300
+  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
 }
 
 variable "alert_high_latency_urgent_threshold" {
@@ -128,8 +133,8 @@ variable "alert_high_latency_urgent_threshold" {
 
 variable "alert_high_latency_non_urgent_duration" {
   type        = number
-  default     = 5
-  description = "How long the error threshold must be exceeded for before an alert is raised (in minutes)"
+  default     = 300
+  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
 }
 
 variable "alert_high_latency_non_urgent_threshold" {
