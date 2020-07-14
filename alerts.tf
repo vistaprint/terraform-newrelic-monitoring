@@ -33,7 +33,7 @@ resource "newrelic_synthetics_alert_condition" "health_check" {
 
   policy_id = newrelic_alert_policy.urgent.id
 
-  name        = "Health check"
+  name        = "${var.newrelic_app_name}: health check"
   monitor_id  = newrelic_synthetics_monitor.health_check.0.id
   runbook_url = var.runbook_url
 }
@@ -44,7 +44,7 @@ resource "newrelic_nrql_alert_condition" "error_rate" {
   account_id = var.newrelic_account_id
   policy_id  = newrelic_alert_policy.urgent.id
 
-  name                 = "Too many sustained errors"
+  name                 = "${var.newrelic_app_name}: too many sustained errors"
   runbook_url          = var.runbook_url
   enabled              = true
   value_function       = "single_value"
@@ -74,7 +74,7 @@ resource "newrelic_nrql_alert_condition" "error_rate" {
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
 
-    since_value = "3" # minutes
+    evaluation_offset = "3" # minutes
   }
 }
 
@@ -84,7 +84,7 @@ resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
   account_id = var.newrelic_account_id
   policy_id  = newrelic_alert_policy.urgent.id
 
-  name                 = "Too many sustained 5xx errors"
+  name                 = "${var.newrelic_app_name}: too many sustained 5xx errors"
   runbook_url          = var.runbook_url
   enabled              = true
   value_function       = "single_value"
@@ -114,7 +114,7 @@ resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
 
-    since_value = "3" # minutes
+    evaluation_offset = "3" # minutes
   }
 }
 
@@ -122,7 +122,7 @@ resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
   account_id = var.newrelic_account_id
   policy_id  = newrelic_alert_policy.urgent.id
 
-  name                 = "High latency for 50% of requests"
+  name                 = "${var.newrelic_app_name}: high latency for 50% of requests"
   runbook_url          = var.runbook_url
   enabled              = true
   value_function       = "single_value"
@@ -142,7 +142,7 @@ resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
 
-    since_value = "3" # minutes
+    evaluation_offset = "3" # minutes
   }
 }
 
@@ -154,7 +154,7 @@ resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
   account_id = var.newrelic_account_id
   policy_id  = newrelic_alert_policy.non_urgent.id
 
-  name                 = "Too many sustained 4xx errors"
+  name                 = "${var.newrelic_app_name}: too many sustained 4xx errors"
   runbook_url          = var.runbook_url
   enabled              = true
   value_function       = "single_value"
@@ -184,7 +184,7 @@ resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
 
-    since_value = "3" # minutes
+    evaluation_offset = "3" # minutes
   }
 }
 
@@ -192,7 +192,7 @@ resource "newrelic_nrql_alert_condition" "high_latency_non_urgent" {
   account_id = var.newrelic_account_id
   policy_id  = newrelic_alert_policy.non_urgent.id
 
-  name                 = "High latency for 1% of requests"
+  name                 = "${var.newrelic_app_name}: high latency for 1% of requests"
   runbook_url          = var.runbook_url
   enabled              = true
   value_function       = "single_value"
@@ -212,6 +212,6 @@ resource "newrelic_nrql_alert_condition" "high_latency_non_urgent" {
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
 
-    since_value = "3" # minutes
+    evaluation_offset = "3" # minutes
   }
 }
