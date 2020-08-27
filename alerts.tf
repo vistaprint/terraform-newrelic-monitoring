@@ -182,6 +182,7 @@ resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
         ) as Percentage
         FROM Transaction
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
+        ${var.alert_error_rate_4xx_conditions}
         EOF
 
     evaluation_offset = "3" # minutes

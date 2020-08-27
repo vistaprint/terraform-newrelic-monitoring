@@ -119,6 +119,12 @@ variable "alert_error_rate_4xx_threshold" {
   description = "Error threshold (in percentage)"
 }
 
+variable "alert_error_rate_4xx_conditions" {
+  type        = string
+  default     = ""
+  description = "WHERE conditions for alert on 4xx errors (must start with AND)"
+}
+
 variable "alert_high_latency_urgent_duration" {
   type        = number
   default     = 300
