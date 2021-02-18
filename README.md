@@ -42,7 +42,3 @@ module "newrelic_monitoring" {
   alert_error_rate_5xx_threshold = 5  # percentage
 }
 ```
-
-## Known Issues
-
-The New Relic provider has an issue managing alert channels. The API does not return some fields in the config block (e.g., the VictorOps API key) when doing a read operation, as they are sensitive values. Thus, Terraform tries to set the key again when running the apply command. This forces recreating the resource even if it is not required. The issue is tracked [here](https://github.com/newrelic/terraform-provider-newrelic/issues/420).
