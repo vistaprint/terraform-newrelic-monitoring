@@ -34,7 +34,7 @@ resource "newrelic_synthetics_alert_condition" "health_check" {
   policy_id = newrelic_alert_policy.urgent.id
 
   name        = "${var.newrelic_app_name}: health check"
-  monitor_id  = newrelic_synthetics_monitor.health_check.0.id
+  monitor_id  = newrelic_synthetics_monitor.health_check[0].id
   runbook_url = var.runbook_url
 }
 
@@ -44,11 +44,12 @@ resource "newrelic_nrql_alert_condition" "error_rate" {
   account_id = var.newrelic_account_id
   policy_id  = newrelic_alert_policy.urgent.id
 
-  name                 = "${var.newrelic_app_name}: too many sustained errors"
-  runbook_url          = var.runbook_url
-  enabled              = true
-  value_function       = "single_value"
-  violation_time_limit = "TWENTY_FOUR_HOURS"
+  name        = "${var.newrelic_app_name}: too many sustained errors"
+  runbook_url = var.runbook_url
+  enabled     = true
+
+  value_function               = "single_value"
+  violation_time_limit_seconds = 86400
 
   critical {
     operator              = "above"
@@ -84,11 +85,12 @@ resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
   account_id = var.newrelic_account_id
   policy_id  = newrelic_alert_policy.urgent.id
 
-  name                 = "${var.newrelic_app_name}: too many sustained 5xx errors"
-  runbook_url          = var.runbook_url
-  enabled              = true
-  value_function       = "single_value"
-  violation_time_limit = "TWENTY_FOUR_HOURS"
+  name        = "${var.newrelic_app_name}: too many sustained 5xx errors"
+  runbook_url = var.runbook_url
+  enabled     = true
+
+  value_function               = "single_value"
+  violation_time_limit_seconds = 86400
 
   critical {
     operator              = "above"
@@ -122,11 +124,12 @@ resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
   account_id = var.newrelic_account_id
   policy_id  = newrelic_alert_policy.urgent.id
 
-  name                 = "${var.newrelic_app_name}: high latency for 50% of requests"
-  runbook_url          = var.runbook_url
-  enabled              = true
-  value_function       = "single_value"
-  violation_time_limit = "TWENTY_FOUR_HOURS"
+  name        = "${var.newrelic_app_name}: high latency for 50% of requests"
+  runbook_url = var.runbook_url
+  enabled     = true
+
+  value_function               = "single_value"
+  violation_time_limit_seconds = 86400
 
   critical {
     operator              = "above"
@@ -154,11 +157,12 @@ resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
   account_id = var.newrelic_account_id
   policy_id  = newrelic_alert_policy.non_urgent.id
 
-  name                 = "${var.newrelic_app_name}: too many sustained 4xx errors"
-  runbook_url          = var.runbook_url
-  enabled              = true
-  value_function       = "single_value"
-  violation_time_limit = "TWENTY_FOUR_HOURS"
+  name        = "${var.newrelic_app_name}: too many sustained 4xx errors"
+  runbook_url = var.runbook_url
+  enabled     = true
+
+  value_function               = "single_value"
+  violation_time_limit_seconds = 86400
 
   critical {
     operator              = "above"
@@ -193,11 +197,12 @@ resource "newrelic_nrql_alert_condition" "high_latency_non_urgent" {
   account_id = var.newrelic_account_id
   policy_id  = newrelic_alert_policy.non_urgent.id
 
-  name                 = "${var.newrelic_app_name}: high latency for 1% of requests"
-  runbook_url          = var.runbook_url
-  enabled              = true
-  value_function       = "single_value"
-  violation_time_limit = "TWENTY_FOUR_HOURS"
+  name        = "${var.newrelic_app_name}: high latency for 1% of requests"
+  runbook_url = var.runbook_url
+  enabled     = true
+
+  value_function               = "single_value"
+  violation_time_limit_seconds = 86400
 
   critical {
     operator              = "above"
