@@ -65,6 +65,18 @@ variable "victorops_non_urgent_routing_key" {
   description = "Routing key where non-urgent notifications will be sent."
 }
 
+variable "enable_pagerduty_notifications" {
+  type        = bool
+  default     = false
+  description = "True if PagerDuty notifications are desired; false otherwise."
+}
+
+variable "pagerduty_service_key" {
+  type        = string
+  default     = null
+  description = "Integration key for the PagerDuty Service"
+}
+
 variable "alert_error_rate_enable" {
   type        = bool
   default     = false
