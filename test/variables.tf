@@ -3,7 +3,8 @@ variable "newrelic_account_id" {
 }
 
 variable "newrelic_region" {
-  type = string
+  type    = string
+  default = "US"
 }
 
 variable "newrelic_api_key" {

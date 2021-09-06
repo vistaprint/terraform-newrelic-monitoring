@@ -16,10 +16,7 @@ module "newrelic_monitoring" {
   service_healthcheck_url = var.service_healthcheck_url
   enable_dashboard        = true
 
-  enable_victorops_notifications   = true
-  victorops_api_key                = var.victorops_api_key
-  victorops_urgent_routing_key     = var.victorops_urgent_routing_key
-  victorops_non_urgent_routing_key = var.victorops_non_urgent_routing_key
+  enable_victorops_notifications   = false
 
   alert_error_rate_enable = true
 }
