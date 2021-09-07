@@ -11,7 +11,7 @@ resource "newrelic_one_dashboard" "dashboard" {
       title      = "Latency (seconds)"
       row        = 1
       column     = 1
-      width      = 3
+      width      = 12
       nrql_query {
         query = <<-EOF
           SELECT
@@ -33,7 +33,7 @@ resource "newrelic_one_dashboard" "dashboard" {
       title      = "Traffic (requests per minute)"
       row        = 2
       column     = 1
-      width      = 1
+      width      = 5
       nrql_query {
         query = <<-EOF
           SELECT rate(count(*), 1 minute) AS 'Requests per minute'
@@ -49,8 +49,8 @@ resource "newrelic_one_dashboard" "dashboard" {
     widget_line {
       title      = "Errors"
       row        = 2
-      column     = 2
-      width      = 2
+      column     = 6
+      width      = 7
       nrql_query {
         query = <<-EOF
           SELECT
