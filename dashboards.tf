@@ -4,14 +4,16 @@ resource "newrelic_one_dashboard" "dashboard" {
   account_id = var.newrelic_account_id
   name       = "${var.newrelic_app_name} Dashboard"
 
+  permissions = var.dashboard_permissions
+
   page {
     name = "${var.newrelic_app_name} Dashboard"
 
     widget_line {
-      title      = "Latency (seconds)"
-      row        = 1
-      column     = 1
-      width      = 12
+      title  = "Latency (seconds)"
+      row    = 1
+      column = 1
+      width  = 12
       nrql_query {
         query = <<-EOF
           SELECT
@@ -26,14 +28,14 @@ resource "newrelic_one_dashboard" "dashboard" {
           TIMESERIES 5 minutes
           SINCE 24 hours ago
           EOF
-        }
+      }
     }
 
     widget_line {
-      title      = "Traffic (requests per minute)"
-      row        = 2
-      column     = 1
-      width      = 5
+      title  = "Traffic (requests per minute)"
+      row    = 2
+      column = 1
+      width  = 5
       nrql_query {
         query = <<-EOF
           SELECT rate(count(*), 1 minute) AS 'Requests per minute'
@@ -47,10 +49,10 @@ resource "newrelic_one_dashboard" "dashboard" {
     }
 
     widget_line {
-      title      = "Errors"
-      row        = 2
-      column     = 6
-      width      = 7
+      title  = "Errors"
+      row    = 2
+      column = 6
+      width  = 7
       nrql_query {
         query = <<-EOF
           SELECT

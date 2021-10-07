@@ -41,6 +41,16 @@ variable "enable_dashboard" {
   description = "True if creating a custom dashboard is desired; false otherwise."
 }
 
+variable "dashboard_permissions" {
+  type        = string
+  default     = "public_read_only"
+  description = <<-EOF
+    Determines who can see the dashboard in an account.
+
+    See https://registry.terraform.io/providers/newrelic/newrelic/latest/docs/resources/one_dashboard#permissions
+  EOF
+}
+
 variable "enable_victorops_notifications" {
   type        = bool
   default     = false
