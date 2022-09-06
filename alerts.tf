@@ -18,12 +18,12 @@ resource "newrelic_alert_policy" "urgent" {
 resource "newrelic_synthetics_monitor" "health_check" {
   count = var.service_healthcheck_url != null ? 1 : 0
 
-  name      = "${var.newrelic_app_name} Health check"
-  type      = "SIMPLE"
-  uri       = var.service_healthcheck_url
-  frequency = 1
-  status    = "ENABLED"
-  locations = ["AWS_US_EAST_1", "AWS_US_WEST_1", "AWS_EU_WEST_1", "AWS_EU_WEST_3", "AWS_AP_NORTHEAST_1", "AWS_AP_SOUTHEAST_2"]
+  name             = "${var.newrelic_app_name} Health check"
+  type             = "SIMPLE"
+  uri              = var.service_healthcheck_url
+  period           = "EVERY_MINUTE"
+  status           = "ENABLED"
+  locations_public = ["AWS_US_EAST_1", "AWS_US_WEST_1", "AWS_EU_WEST_1", "AWS_EU_WEST_3", "AWS_AP_NORTHEAST_1", "AWS_AP_SOUTHEAST_2"]
 }
 
 # urgent conditions
@@ -48,7 +48,10 @@ resource "newrelic_nrql_alert_condition" "error_rate" {
   runbook_url = var.runbook_url
   enabled     = true
 
-  value_function               = "single_value"
+  aggregation_method = "event_flow"
+  aggregation_delay  = 180
+  slide_by           = 30
+
   violation_time_limit_seconds = 86400
 
   critical {
@@ -74,8 +77,6 @@ resource "newrelic_nrql_alert_condition" "error_rate" {
         FROM Transaction
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
-
-    evaluation_offset = "3" # minutes
   }
 }
 
@@ -89,7 +90,10 @@ resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
   runbook_url = var.runbook_url
   enabled     = true
 
-  value_function               = "single_value"
+  aggregation_method = "event_flow"
+  aggregation_delay  = 180
+  slide_by           = 30
+
   violation_time_limit_seconds = 86400
 
   critical {
@@ -115,8 +119,6 @@ resource "newrelic_nrql_alert_condition" "error_rate_5xx" {
         FROM Transaction
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
-
-    evaluation_offset = "3" # minutes
   }
 }
 
@@ -128,7 +130,10 @@ resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
   runbook_url = var.runbook_url
   enabled     = true
 
-  value_function               = "single_value"
+  aggregation_method = "event_flow"
+  aggregation_delay  = 180
+  slide_by           = 30
+
   violation_time_limit_seconds = 86400
 
   critical {
@@ -144,8 +149,6 @@ resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
         FROM Transaction
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
-
-    evaluation_offset = "3" # minutes
   }
 }
 
@@ -161,7 +164,10 @@ resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
   runbook_url = var.runbook_url
   enabled     = true
 
-  value_function               = "single_value"
+  aggregation_method = "event_flow"
+  aggregation_delay  = 180
+  slide_by           = 30
+
   violation_time_limit_seconds = 86400
 
   critical {
@@ -188,8 +194,6 @@ resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         ${var.alert_error_rate_4xx_conditions}
         EOF
-
-    evaluation_offset = "3" # minutes
   }
 }
 
@@ -201,7 +205,10 @@ resource "newrelic_nrql_alert_condition" "high_latency_non_urgent" {
   runbook_url = var.runbook_url
   enabled     = true
 
-  value_function               = "single_value"
+  aggregation_method = "event_flow"
+  aggregation_delay  = 180
+  slide_by           = 30
+
   violation_time_limit_seconds = 86400
 
   critical {
@@ -217,7 +224,5 @@ resource "newrelic_nrql_alert_condition" "high_latency_non_urgent" {
         FROM Transaction
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         EOF
-
-    evaluation_offset = "3" # minutes
   }
 }

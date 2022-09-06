@@ -33,6 +33,18 @@ variable "runbook_url" {
   default = null
 }
 
+variable "pagerduty_user_email" {
+  type = string
+}
+
+variable "pagerduty_team_name" {
+  type = string
+}
+
+variable "pagerduty_api_token" {
+  type = string
+}
+
 variable "victorops_api_key" {
   type    = string
   default = null
