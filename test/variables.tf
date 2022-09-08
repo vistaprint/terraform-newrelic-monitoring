@@ -34,7 +34,8 @@ variable "runbook_url" {
 }
 
 variable "pagerduty_user_email" {
-  type = string
+  type        = string
+  description = "Pagerduty's user e-mail. This user must belong to 'pagerduty_team_name' and have Manager permissions."
 }
 
 variable "pagerduty_team_name" {
