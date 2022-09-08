@@ -33,6 +33,19 @@ variable "runbook_url" {
   default = null
 }
 
+variable "pagerduty_api_token" {
+  type = string
+}
+
+variable "pagerduty_team_name" {
+  type = string
+}
+
+variable "pagerduty_user_email" {
+  type        = string
+  description = "Pagerduty's user e-mail. This user must belong to 'pagerduty_team_name' and have Manager permissions."
+}
+
 variable "victorops_api_key" {
   type    = string
   default = null
