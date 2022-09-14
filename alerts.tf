@@ -23,7 +23,7 @@ resource "newrelic_synthetics_monitor" "health_check" {
   uri              = var.service_healthcheck_url
   period           = "EVERY_MINUTE"
   status           = "ENABLED"
-  locations_public = ["AWS_US_EAST_1", "AWS_US_WEST_1", "AWS_EU_WEST_1", "AWS_EU_WEST_3", "AWS_AP_NORTHEAST_1", "AWS_AP_SOUTHEAST_2"]
+  locations_public = ["US_EAST_1", "US_WEST_1", "EU_WEST_1", "EU_WEST_3", "AP_NORTHEAST_1", "AP_SOUTHEAST_2"]
 }
 
 # urgent conditions
