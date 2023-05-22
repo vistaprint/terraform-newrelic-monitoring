@@ -51,30 +51,6 @@ variable "dashboard_permissions" {
   EOF
 }
 
-variable "enable_victorops_notifications" {
-  type        = bool
-  default     = false
-  description = "True if VictorOps notifications are desired; false otherwise."
-}
-
-variable "victorops_api_key" {
-  type        = string
-  default     = null
-  description = "API key for VictorOps"
-}
-
-variable "victorops_urgent_routing_key" {
-  type        = string
-  default     = null
-  description = "Routing key where urgent notifications will be sent."
-}
-
-variable "victorops_non_urgent_routing_key" {
-  type        = string
-  default     = null
-  description = "Routing key where non-urgent notifications will be sent."
-}
-
 variable "enable_pagerduty_notifications" {
   type        = bool
   default     = false

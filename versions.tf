@@ -4,6 +4,10 @@ terraform {
       source  = "newrelic/newrelic"
       version = ">= 3"
     }
+    pagerduty = {
+      source  = "PagerDuty/pagerduty"
+      version = ">= 2"
+    }
   }
-  required_version = ">= 0.13"
+  required_version = ">= 1"
 }
