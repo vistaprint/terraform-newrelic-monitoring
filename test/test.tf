@@ -9,8 +9,6 @@ module "newrelic_monitoring" {
   service_healthcheck_url = var.service_healthcheck_url
   enable_dashboard        = true
 
-  enable_victorops_notifications = false
-
   alert_error_rate_enable = true
 
   enable_pagerduty_notifications = true

@@ -45,18 +45,3 @@ variable "pagerduty_user_email" {
   type        = string
   description = "Pagerduty's user e-mail. This user must belong to 'pagerduty_team_name' and have Manager permissions."
 }
-
-variable "victorops_api_key" {
-  type    = string
-  default = null
-}
-
-variable "victorops_urgent_routing_key" {
-  type    = string
-  default = null
-}
-
-variable "victorops_non_urgent_routing_key" {
-  type    = string
-  default = null
-}
