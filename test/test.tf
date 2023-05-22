@@ -13,4 +13,7 @@ module "newrelic_monitoring" {
 
   enable_pagerduty_notifications = true
   pagerduty_service_key          = pagerduty_service_integration.newrelic.integration_key
+
+  create_default_slos            = true
+  latency_slo_duration_threshold = 0.1
 }
