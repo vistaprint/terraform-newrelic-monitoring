@@ -1,8 +1,3 @@
-data "newrelic_entity" "app" {
-  name = var.newrelic_fully_qualified_app_name
-  type = "APPLICATION"
-}
-
 resource "newrelic_alert_policy" "non_urgent" {
   account_id = var.newrelic_account_id
   name       = "${var.newrelic_app_name} Non Urgent"

@@ -24,7 +24,7 @@ module "newrelic_monitoring" {
 }
 ```
 
-See `variables.tf` for more information on the input variables that the module accepts. For instance, the default values for an alert's duration and threshold can be overridden. The following example shows how to do so:
+See [variables.tf](./variables.tf) for more information on the input variables that the module accepts. For instance, the default values for an alert's duration and threshold can be overridden. The following example shows how to do so:
 
 ```hcl
 module "newrelic_monitoring" {
@@ -48,3 +48,20 @@ pagerduty_service_key          = "The New Relic integration key for your service
 ```
 
 You can obtain the integration key for your service with Terraform using a resource named `pagerduty_service_integration`.
+
+## Creating Default SLOs
+
+New Relic supports the creation of [service levels](https://docs.newrelic.com/docs/service-level-management/intro-slm/) for applications. This terraform module allows for creating two SLOs &ndash; one measuring request latency and the other measuring application availability. The SLOs use a default rolling time window spanning seven days. To create the SLOs, set the following variable:
+
+```hcl
+create_default_slos = true
+```
+
+Some parameters for the SLOs can be fine-tuned (see [variables.tf](./variables.tf) for more details). For instance, you can use the following snippet to specify that the latency duration should not exceed 100 ms with a target value of 99.99%.
+
+```hcl
+latency_slo_target = 99.99
+latency_slo_duration_threshold = 0.1
+```
+
+For more details about these parameters, please check the [official documentation](https://docs.newrelic.com/docs/service-level-management/intro-slm/).

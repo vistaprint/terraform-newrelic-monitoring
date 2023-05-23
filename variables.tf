@@ -159,3 +159,26 @@ variable "response_status_variable_name" {
     the default value.
   EOF
 }
+
+variable "create_default_slos" {
+  type        = bool
+  default     = false
+  description = "If true, two SLOs (latency and availability) will be created"
+}
+
+variable "latency_slo_target" {
+  type        = number
+  default     = 95.00
+  description = "Target value for latency SLO"
+}
+
+variable "latency_slo_duration_threshold" {
+  type        = number
+  description = "Duration threshold for the latency SLO (in seconds)"
+}
+
+variable "availability_slo_target" {
+  type        = number
+  default     = 99.00
+  description = "Target value for availability SLO"
+}
