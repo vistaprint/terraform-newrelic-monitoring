@@ -174,7 +174,7 @@ variable "latency_slo_target" {
 
 variable "latency_slo_duration_threshold" {
   type        = number
-  description = "Duration threshold for the latency SLO"
+  description = "Duration threshold for the latency SLO (in seconds)"
 }
 
 variable "availability_slo_target" {

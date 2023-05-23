@@ -63,3 +63,5 @@ Some parameters for the SLOs can be fine-tuned (see [variables.tf](./variables.t
 latency_slo_target = 99.99
 latency_slo_duration_threshold = 0.1
 ```
+
+For more details about these parameters, please check the [official documentation](https://docs.newrelic.com/docs/service-level-management/intro-slm/).
