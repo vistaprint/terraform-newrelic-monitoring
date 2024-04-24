@@ -33,34 +33,27 @@ resource "newrelic_nrql_alert_condition" "health_check" {
   runbook_url = var.runbook_url
   enabled     = true
 
-  aggregation_method = "event_flow"
-  aggregation_delay  = 180
-  slide_by           = 30
+  aggregation_method  = "event_flow"
+  aggregation_windows = 60
+  aggregation_delay   = 180
+  slide_by            = 30
 
   violation_time_limit_seconds = 86400
 
   critical {
-    operator              = "above"
-    threshold             = var.alert_health_check_threshold
+    operator              = "below"
+    threshold             = newrelic_synthetics_monitor.health_check[0].period_in_minutes * 60
     threshold_duration    = var.alert_health_check_duration
     threshold_occurrences = "ALL"
   }
 
-  # The operation 'percentage(count(*), WHERE result != 'SUCCESS')' can be represented as follows:
-  #
-  # Unsuccessful Synthetic check events
-  # –––––––––––––––––––––––––––––
-  # Synthetic events (overall)
-  #
-  # For intervals with no events the operation ends up being 0 / 0, which returns NULL.
-  # To avoid this problem we use a query that ensures the denominator is always a non-zero value.
   nrql {
     query = <<-EOF
-        SELECT 100 * (
-          filter(count(*), WHERE result != 'SUCCESS') / (count(*) + 1e-10)
-        ) as Percentage
+        SELECT count(*)
         FROM SyntheticCheck
         WHERE monitorName = '${newrelic_synthetics_monitor.health_check[0].name}'
+        AND result = 'SUCCESS'
+        FACET location
         EOF
   }
 }

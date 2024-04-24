@@ -35,12 +35,6 @@ variable "alert_health_check_duration" {
   description = "How long the synthetics monitor check threshold must fail before an alert is raised (in seconds)"
 }
 
-variable "alert_health_check_threshold" {
-  type        = number
-  default     = 5
-  description = "synthetics monito check threshold (in percentage)"
-}
-
 variable "runbook_url" {
   type        = string
   default     = null
