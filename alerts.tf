@@ -23,14 +23,46 @@ resource "newrelic_synthetics_monitor" "health_check" {
 
 # urgent conditions
 
-resource "newrelic_synthetics_alert_condition" "health_check" {
+resource "newrelic_nrql_alert_condition" "health_check" {
   count = var.service_healthcheck_url != null ? 1 : 0
 
-  policy_id = newrelic_alert_policy.urgent.id
+  account_id = var.newrelic_account_id
+  policy_id  = newrelic_alert_policy.urgent.id
 
   name        = "${var.newrelic_app_name}: health check"
-  monitor_id  = newrelic_synthetics_monitor.health_check[0].id
   runbook_url = var.runbook_url
+  enabled     = true
+
+  aggregation_method = "event_flow"
+  aggregation_delay  = 180
+  slide_by           = 30
+
+  violation_time_limit_seconds = 86400
+
+  critical {
+    operator              = "above"
+    threshold             = var.alert_health_check_threshold
+    threshold_duration    = var.alert_health_check_duration
+    threshold_occurrences = "ALL"
+  }
+
+  # The operation 'percentage(count(*), WHERE result != 'SUCCESS')' can be represented as follows:
+  #
+  # Unsuccessful Synthetic check events
+  # –––––––––––––––––––––––––––––
+  # Synthetic events (overall)
+  #
+  # For intervals with no events the operation ends up being 0 / 0, which returns NULL.
+  # To avoid this problem we use a query that ensures the denominator is always a non-zero value.
+  nrql {
+    query = <<-EOF
+        SELECT 100 * (
+          filter(count(*), WHERE result != 'SUCCESS') / (count(*) + 1e-10)
+        ) as Percentage
+        FROM SyntheticCheck
+        WHERE monitorName = '${newrelic_synthetics_monitor.health_check[0].name}'
+        EOF
+  }
 }
 
 resource "newrelic_nrql_alert_condition" "error_rate" {
@@ -188,6 +220,49 @@ resource "newrelic_nrql_alert_condition" "error_rate_4xx" {
         FROM Transaction
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
         ${var.alert_error_rate_4xx_conditions}
+        EOF
+  }
+}
+
+resource "newrelic_nrql_alert_condition" "error_rate_429" {
+  count = var.alert_error_rate_429_enable ? 1 : 0
+
+  account_id = var.newrelic_account_id
+  policy_id  = newrelic_alert_policy.non_urgent.id
+
+  name        = "${var.newrelic_app_name}: too many sustained 429 errors"
+  runbook_url = var.runbook_url
+  enabled     = true
+
+  aggregation_method = "event_flow"
+  aggregation_delay  = 180
+  slide_by           = 30
+
+  violation_time_limit_seconds = 86400
+
+  critical {
+    operator              = "above"
+    threshold             = var.alert_error_rate_429_threshold
+    threshold_duration    = var.alert_error_rate_429_duration
+    threshold_occurrences = "ALL"
+  }
+
+  # The operation 'percentage(count(*), WHERE response.status LIKE '4%')' can be represented as follows:
+  #
+  # Transaction events with 4xx status code
+  # ––––––––––––––––––––––––––––––––––––––
+  #     Transaction events (overall)
+  #
+  # For intervals with no events the operation ends up being 0 / 0, which returns NULL.
+  # To avoid this problem we use a query that ensures the denominator is always a non-zero value.
+  nrql {
+    query = <<-EOF
+        SELECT 100 * (
+          filter(count(*), WHERE ${var.response_status_variable_name} LIKE '429%') / (count(*) + 1e-10)
+        ) as Percentage
+        FROM Transaction
+        WHERE appName = '${var.newrelic_fully_qualified_app_name}'
+        ${var.alert_error_rate_429_conditions}
         EOF
   }
 }

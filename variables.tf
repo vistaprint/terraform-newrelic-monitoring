@@ -29,6 +29,18 @@ variable "service_healthcheck_url" {
   EOF
 }
 
+variable "alert_health_check_duration" {
+  type        = number
+  default     = 300
+  description = "How long the synthetics monitor check threshold must fail before an alert is raised (in seconds)"
+}
+
+variable "alert_health_check_threshold" {
+  type        = number
+  default     = 5
+  description = "synthetics monito check threshold (in percentage)"
+}
+
 variable "runbook_url" {
   type        = string
   default     = null
@@ -121,6 +133,30 @@ variable "alert_error_rate_4xx_conditions" {
   type        = string
   default     = ""
   description = "WHERE conditions for alert on 4xx errors (must start with AND)"
+}
+
+variable "alert_error_rate_429_enable" {
+  type        = bool
+  default     = true
+  description = "Enable or disable 429 error rate alert"
+}
+
+variable "alert_error_rate_429_duration" {
+  type        = number
+  default     = 300
+  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
+}
+
+variable "alert_error_rate_429_threshold" {
+  type        = number
+  default     = 30
+  description = "Error threshold (in percentage)"
+}
+
+variable "alert_error_rate_429_conditions" {
+  type        = string
+  default     = ""
+  description = "WHERE conditions for alert on 429 errors (must start with AND)"
 }
 
 variable "alert_high_latency_urgent_duration" {
