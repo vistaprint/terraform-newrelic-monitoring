@@ -169,7 +169,7 @@ resource "newrelic_nrql_alert_condition" "status_code_error_rate" {
         ) as Percentage
         FROM Transaction
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
-        ${each.value.extra_conditions!=null?each.value.extra_conditions:""}
+        ${coalesce(each.value.extra_conditions, " ")}
         EOF
   }
 }
