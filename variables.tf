@@ -87,70 +87,40 @@ variable "alert_error_rate_threshold" {
   description = "Error threshold (in percentage)"
 }
 
-variable "alert_error_rate_5xx_enable" {
-  type        = bool
-  default     = true
-  description = "Enable or disable 5xx error rate alert"
-}
-
-variable "alert_error_rate_5xx_duration" {
-  type        = number
-  default     = 300
-  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
-}
-
-variable "alert_error_rate_5xx_threshold" {
-  type        = number
-  default     = 10
-  description = "Error threshold (in percentage)"
-}
-
-variable "alert_error_rate_4xx_enable" {
-  type        = bool
-  default     = true
-  description = "Enable or disable 4xx error rate alert"
-}
-
-variable "alert_error_rate_4xx_duration" {
-  type        = number
-  default     = 300
-  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
-}
-
-variable "alert_error_rate_4xx_threshold" {
-  type        = number
-  default     = 30
-  description = "Error threshold (in percentage)"
-}
-
-variable "alert_error_rate_4xx_conditions" {
+variable "response_status_variable_name" {
   type        = string
-  default     = ""
-  description = "WHERE conditions for alert on 4xx errors (must start with AND)"
+  default     = "response.status"
+  description = <<-EOT
+    Name of the variable containing the response status in a transaction.
+
+    Different New Relic agents seem to use different names for the variable
+    containing the response status. `response.status` and `httpResponseCode`
+    seem to be the names used by most agents. Set this variable to override
+    the default value.
+  EOT
 }
 
-variable "alert_error_rate_429_enable" {
-  type        = bool
-  default     = true
-  description = "Enable or disable 429 error rate alert"
-}
+variable "response_status_codes_alerts" {
+  type = list(object({
+    name             = string
+    nrql_value       = string
+    isUrgent         = bool
+    duration         = number
+    threshold        = number
+    extra_conditions = optional(string)
+  }))
 
-variable "alert_error_rate_429_duration" {
-  type        = number
-  default     = 300
-  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
-}
+  nullable = true
 
-variable "alert_error_rate_429_threshold" {
-  type        = number
-  default     = 30
-  description = "Error threshold (in percentage)"
-}
-
-variable "alert_error_rate_429_conditions" {
-  type        = string
-  default     = ""
-  description = "WHERE conditions for alert on 429 errors (must start with AND)"
+  description = <<-EOT
+    List of alerts to be created based on status codes.
+    `name`: name of the alert
+    `nrql_value`: actual value of the response code used in the WHERE expression
+    `isUrgent`: if true, urgent policy will be used
+    `duration`: the number of seconds that responses are above a given threshold before the alert is created
+    `threshold`: the percentage of requests that returns this response code 
+    `extra_conditions`: WHERE conditions for the alert (must start with AND) (optional)
+  EOT
 }
 
 variable "alert_high_latency_urgent_duration" {
@@ -175,19 +145,6 @@ variable "alert_high_latency_non_urgent_threshold" {
   type        = number
   default     = 1000
   description = "Latency threshold (in milliseconds)"
-}
-
-variable "response_status_variable_name" {
-  type        = string
-  default     = "response.status"
-  description = <<-EOF
-    Name of the variable containing the response status in a transaction.
-
-    Different New Relic agents seem to use different names for the variable
-    containing the response status. `response.status` and `httpResponseCode`
-    seem to be the names used by most agents. Set this variable to override
-    the default value.
-  EOF
 }
 
 variable "create_default_slos" {

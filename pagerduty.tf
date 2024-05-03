@@ -1,5 +1,8 @@
 locals {
-  summary       = "{{ annotations.title.[0] }}"
+  summary = "{{ annotations.title.[0] }}"
+  # See here https://docs.newrelic.com/docs/alerts-applied-intelligence/applied-intelligence/incident-workflows/custom-variables-incident-workflows/
+  # for information about variables that can be used
+  # and here for a migration guide: https://docs.newrelic.com/docs/alerts-applied-intelligence/applied-intelligence/incident-workflows/migration-to-workflows/
   customDetails = <<-EOT
     {
       "condition_name": {{json accumulations.conditionName.[0]}},
@@ -22,7 +25,7 @@ resource "newrelic_notification_destination" "pagerduty" {
   count = var.enable_pagerduty_notifications ? 1 : 0
 
   account_id = var.newrelic_account_id
-  name       = var.newrelic_app_name
+  name       = "${var.newrelic_app_name}: PagerDuty"
   type       = "PAGERDUTY_SERVICE_INTEGRATION"
 
 
@@ -31,9 +34,10 @@ resource "newrelic_notification_destination" "pagerduty" {
     token  = var.pagerduty_service_key
   }
 
+  # This resource requires at least 1 property block
   property {
-    key   = "two_way_integration"
-    value = "false"
+    key   = ""
+    value = ""
   }
 }
 
@@ -41,7 +45,7 @@ resource "newrelic_notification_channel" "pagerduty_urgent_channel" {
   count = var.enable_pagerduty_notifications ? 1 : 0
 
   account_id     = var.newrelic_account_id
-  name           = var.newrelic_app_name
+  name           = "${var.newrelic_app_name}: Urgent Channel"
   type           = "PAGERDUTY_SERVICE_INTEGRATION"
   destination_id = newrelic_notification_destination.pagerduty[0].id
   product        = "IINT"
@@ -61,14 +65,14 @@ resource "newrelic_notification_channel" "pagerduty_non_urgent_channel" {
   count = var.enable_pagerduty_notifications ? 1 : 0
 
   account_id     = var.newrelic_account_id
-  name           = var.newrelic_app_name
+  name           = "${var.newrelic_app_name}: Non Urgent Channel"
   type           = "PAGERDUTY_SERVICE_INTEGRATION"
   destination_id = newrelic_notification_destination.pagerduty[0].id
   product        = "IINT"
 
   property {
     key   = "summary"
-    value = "{{ annotations.title.[0] }}"
+    value = local.summary
   }
 
   property {
@@ -78,7 +82,7 @@ resource "newrelic_notification_channel" "pagerduty_non_urgent_channel" {
 }
 
 resource "newrelic_workflow" "non_urgent_workflow" {
-  name                  = "${var.newrelic_fully_qualified_app_name} PagerDuty Non Urgent Workflow"
+  name                  = "${var.newrelic_app_name}: PagerDuty Non Urgent Workflow"
   muting_rules_handling = "NOTIFY_ALL_ISSUES"
 
   issues_filter {
@@ -98,7 +102,7 @@ resource "newrelic_workflow" "non_urgent_workflow" {
 }
 
 resource "newrelic_workflow" "urgent_workflow" {
-  name                  = "${var.newrelic_fully_qualified_app_name} PagerDuty Urgent Workflow"
+  name                  = "${var.newrelic_app_name}: PagerDuty Urgent Workflow"
   muting_rules_handling = "NOTIFY_ALL_ISSUES"
 
   issues_filter {
