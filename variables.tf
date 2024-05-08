@@ -32,7 +32,7 @@ variable "service_healthcheck_url" {
 variable "alert_health_check_duration" {
   type        = number
   default     = 300
-  description = "How long the synthetics monitor check threshold must fail before an alert is raised (in seconds)"
+  description = "How long the synthetics monitor check must fail before an alert is triggered (in seconds)"
 }
 
 variable "runbook_url" {
@@ -78,7 +78,7 @@ variable "alert_error_rate_enable" {
 variable "alert_error_rate_duration" {
   type        = number
   default     = 300
-  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
+  description = "How long the error threshold must be exceeded for before an alert is triggered (in seconds)"
 }
 
 variable "alert_error_rate_threshold" {
@@ -100,14 +100,14 @@ variable "response_status_variable_name" {
   EOT
 }
 
-variable "response_status_codes_alerts" {
+variable "status_code_alerts" {
   type = list(object({
-    name             = string
-    nrql_value       = string
-    isUrgent         = bool
-    duration         = number
-    threshold        = number
-    extra_conditions = optional(string)
+    name                  = string
+    status_code_pattern   = string
+    urgent                = bool
+    duration              = number
+    threshold             = number
+    extra_nrql_conditions = optional(string)
   }))
 
   nullable = true
@@ -115,18 +115,19 @@ variable "response_status_codes_alerts" {
   description = <<-EOT
     List of alerts to be created based on status codes.
     `name`: name of the alert
-    `nrql_value`: actual value of the response code used in the WHERE expression
-    `isUrgent`: if true, urgent policy will be used
-    `duration`: the number of seconds that responses are above a given threshold before the alert is created
-    `threshold`: the percentage of requests that returns this response code 
-    `extra_conditions`: WHERE conditions for the alert (must start with AND) (optional)
+    `status_code_pattern`: actual value (or pattern) of the response code used to check for the status code.
+    For instance '400' or '4%'
+    `urgent`: if true, urgent policy will be used
+    `duration`: the number of seconds that the threshold needs to be exceeded before triggering the alert.
+    `threshold`: maximum percentage of requests that are allowed to result in the specified status code before the alert triggers.
+    `extra_nrql_conditions`: extra filters to add to the alert (optional)
   EOT
 }
 
 variable "alert_high_latency_urgent_duration" {
   type        = number
   default     = 300
-  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
+  description = "How long the error threshold must be exceeded for before an alert is triggered (in seconds)"
 }
 
 variable "alert_high_latency_urgent_threshold" {
@@ -138,7 +139,7 @@ variable "alert_high_latency_urgent_threshold" {
 variable "alert_high_latency_non_urgent_duration" {
   type        = number
   default     = 300
-  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
+  description = "How long the error threshold must be exceeded for before an alert is triggered (in seconds)"
 }
 
 variable "alert_high_latency_non_urgent_threshold" {

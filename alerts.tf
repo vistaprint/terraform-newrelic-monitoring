@@ -21,8 +21,6 @@ resource "newrelic_synthetics_monitor" "health_check" {
   locations_public = ["US_EAST_1", "US_WEST_1", "EU_WEST_1", "EU_WEST_3", "AP_NORTHEAST_1", "AP_SOUTHEAST_2"]
 }
 
-# urgent conditions
-
 resource "newrelic_nrql_alert_condition" "health_check" {
   count = var.service_healthcheck_url != null ? 1 : 0
 
@@ -34,7 +32,6 @@ resource "newrelic_nrql_alert_condition" "health_check" {
   enabled     = true
 
   aggregation_method = "event_flow"
-  aggregation_window = 60
   aggregation_delay  = 180
   slide_by           = 30
 
@@ -130,12 +127,11 @@ resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
   }
 }
 
-# urgent/non urgent conditions
 resource "newrelic_nrql_alert_condition" "status_code_error_rate" {
-  for_each = { for i, val in var.response_status_codes_alerts : i => val }
+  for_each = { for i, val in var.status_code_alerts : i => val }
 
   account_id = var.newrelic_account_id
-  policy_id  = each.value.isUrgent ? newrelic_alert_policy.urgent.id : newrelic_alert_policy.non_urgent.id
+  policy_id  = each.value.urgent ? newrelic_alert_policy.urgent.id : newrelic_alert_policy.non_urgent.id
 
   name        = each.value.name
   runbook_url = var.runbook_url
@@ -154,7 +150,7 @@ resource "newrelic_nrql_alert_condition" "status_code_error_rate" {
     threshold_occurrences = "ALL"
   }
 
-  # The operation 'percentage(count(*), WHERE response.status LIKE '5%')' can be represented as follows:
+  # The operation 'percentage(count(*), WHERE response.status LIKE 'status_code_pattern')' can be represented as follows:
   #
   # Transaction events with 5xx status code
   # ––––––––––––––––––––––––––––––––––––––
@@ -165,16 +161,14 @@ resource "newrelic_nrql_alert_condition" "status_code_error_rate" {
   nrql {
     query = <<-EOF
         SELECT 100 * (
-          filter(count(*), WHERE ${var.response_status_variable_name} LIKE '${each.value.nrql_value}') / (count(*) + 1e-10)
+          filter(count(*), WHERE ${var.response_status_variable_name} LIKE '${each.value.status_code_pattern}') / (count(*) + 1e-10)
         ) as Percentage
         FROM Transaction
         WHERE appName = '${var.newrelic_fully_qualified_app_name}'
-        ${coalesce(each.value.extra_conditions, " ")}
+        ${each.value.extra_nrql_conditions != null ? "AND ${each.value.extra_nrql_conditions}" : ""}
         EOF
   }
 }
-
-# non-urgent conditions
 
 resource "newrelic_nrql_alert_condition" "high_latency_non_urgent" {
   account_id = var.newrelic_account_id
