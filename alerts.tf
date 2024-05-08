@@ -31,15 +31,19 @@ resource "newrelic_nrql_alert_condition" "health_check" {
   runbook_url = var.runbook_url
   enabled     = true
 
+  aggregation_window = 300
   aggregation_method = "event_flow"
   aggregation_delay  = 180
   slide_by           = 30
 
+  fill_option = "static"
+  fill_value  = 0
+
   violation_time_limit_seconds = 86400
 
   critical {
-    operator              = "below"
-    threshold             = newrelic_synthetics_monitor.health_check[0].period_in_minutes * 60
+    operator              = "above"
+    threshold             = var.alert_health_check_threshold
     threshold_duration    = var.alert_health_check_duration
     threshold_occurrences = "ALL"
   }
@@ -49,7 +53,7 @@ resource "newrelic_nrql_alert_condition" "health_check" {
         SELECT count(*)
         FROM SyntheticCheck
         WHERE monitorName = '${newrelic_synthetics_monitor.health_check[0].name}'
-        AND result = 'SUCCESS'
+        AND result = 'FAILED'
         FACET location
         EOF
   }

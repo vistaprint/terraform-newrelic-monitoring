@@ -29,6 +29,12 @@ variable "service_healthcheck_url" {
   EOF
 }
 
+variable "alert_health_check_threshold" {
+  type        = number
+  default     = 1
+  description = "Number of failed health checks before the alert is triggered"
+}
+
 variable "alert_health_check_duration" {
   type        = number
   default     = 300
