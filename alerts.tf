@@ -36,9 +36,6 @@ resource "newrelic_nrql_alert_condition" "health_check" {
   aggregation_delay  = 180
   slide_by           = 30
 
-  fill_option = "static"
-  fill_value  = 0
-
   violation_time_limit_seconds = 86400
 
   critical {
@@ -50,11 +47,9 @@ resource "newrelic_nrql_alert_condition" "health_check" {
 
   nrql {
     query = <<-EOF
-        SELECT count(*)
+        SELECT filter(count(*), WHERE result = 'FAILED')
         FROM SyntheticCheck
         WHERE monitorName = '${newrelic_synthetics_monitor.health_check[0].name}'
-        AND result = 'FAILED'
-        FACET location
         EOF
   }
 }
