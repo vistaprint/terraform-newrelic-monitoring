@@ -151,7 +151,7 @@ resource "newrelic_nrql_alert_condition" "status_code_error_rate" {
 
   # The operation 'percentage(count(*), WHERE response.status LIKE 'status_code_pattern')' can be represented as follows:
   #
-  # Transaction events with 5xx status code
+  # Transaction events with status code
   # ––––––––––––––––––––––––––––––––––––––
   #     Transaction events (overall)
   #
