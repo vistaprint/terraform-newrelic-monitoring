@@ -29,6 +29,18 @@ variable "service_healthcheck_url" {
   EOF
 }
 
+variable "alert_health_check_threshold" {
+  type        = number
+  default     = 2
+  description = "Number of failed health checks before the alert is triggered"
+}
+
+variable "alert_health_check_duration" {
+  type        = number
+  default     = 300
+  description = "How long the synthetics monitor check must fail before an alert is triggered (in seconds)"
+}
+
 variable "runbook_url" {
   type        = string
   default     = null
@@ -72,7 +84,7 @@ variable "alert_error_rate_enable" {
 variable "alert_error_rate_duration" {
   type        = number
   default     = 300
-  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
+  description = "How long the error threshold must be exceeded for before an alert is triggered (in seconds)"
 }
 
 variable "alert_error_rate_threshold" {
@@ -81,52 +93,47 @@ variable "alert_error_rate_threshold" {
   description = "Error threshold (in percentage)"
 }
 
-variable "alert_error_rate_5xx_enable" {
-  type        = bool
-  default     = true
-  description = "Enable or disable 5xx error rate alert"
-}
-
-variable "alert_error_rate_5xx_duration" {
-  type        = number
-  default     = 300
-  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
-}
-
-variable "alert_error_rate_5xx_threshold" {
-  type        = number
-  default     = 10
-  description = "Error threshold (in percentage)"
-}
-
-variable "alert_error_rate_4xx_enable" {
-  type        = bool
-  default     = true
-  description = "Enable or disable 4xx error rate alert"
-}
-
-variable "alert_error_rate_4xx_duration" {
-  type        = number
-  default     = 300
-  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
-}
-
-variable "alert_error_rate_4xx_threshold" {
-  type        = number
-  default     = 30
-  description = "Error threshold (in percentage)"
-}
-
-variable "alert_error_rate_4xx_conditions" {
+variable "response_status_variable_name" {
   type        = string
-  default     = ""
-  description = "WHERE conditions for alert on 4xx errors (must start with AND)"
+  default     = "response.status"
+  description = <<-EOT
+    Name of the variable containing the response status in a transaction.
+
+    Different New Relic agents seem to use different names for the variable
+    containing the response status. `response.status` and `httpResponseCode`
+    seem to be the names used by most agents. Set this variable to override
+    the default value.
+  EOT
+}
+
+variable "status_code_alerts" {
+  type = list(object({
+    name                  = string
+    status_code_pattern   = string
+    urgent                = bool
+    duration              = number
+    threshold             = number
+    extra_nrql_conditions = optional(string)
+  }))
+
+  nullable = true
+
+  description = <<-EOT
+    List of alerts to be created based on status codes.
+    `name`: name of the alert
+    `status_code_pattern`: actual value (or pattern) of the response code used to check for the status code.
+    For instance '400' or '4%'
+    `urgent`: if true, urgent policy will be used
+    `duration`: the number of seconds that the threshold needs to be exceeded before triggering the alert.
+    `threshold`: maximum percentage of requests that are allowed to result in the specified status code before the alert triggers.
+    `extra_nrql_conditions`: extra filters to add to the alert (optional)
+  EOT
 }
 
 variable "alert_high_latency_urgent_duration" {
   type        = number
   default     = 300
-  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
+  description = "How long the error threshold must be exceeded for before an alert is triggered (in seconds)"
 }
 
 variable "alert_high_latency_urgent_threshold" {
@@ -138,26 +145,13 @@ variable "alert_high_latency_urgent_threshold" {
 variable "alert_high_latency_non_urgent_duration" {
   type        = number
   default     = 300
-  description = "How long the error threshold must be exceeded for before an alert is raised (in seconds)"
+  description = "How long the error threshold must be exceeded for before an alert is triggered (in seconds)"
 }
 
 variable "alert_high_latency_non_urgent_threshold" {
   type        = number
   default     = 1000
   description = "Latency threshold (in milliseconds)"
-}
-
-variable "response_status_variable_name" {
-  type        = string
-  default     = "response.status"
-  description = <<-EOF
-    Name of the variable containing the response status in a transaction.
-
-    Different New Relic agents seem to use different names for the variable
-    containing the response status. `response.status` and `httpResponseCode`
-    seem to be the names used by most agents. Set this variable to override
-    the default value.
-  EOF
 }
 
 variable "create_default_slos" {
