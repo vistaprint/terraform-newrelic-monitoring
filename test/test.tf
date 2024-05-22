@@ -15,12 +15,12 @@ module "newrelic_monitoring" {
       threshold           = 30
     },
     {
-      name                = "${var.newrelic_app_name}: too many sustained 429 errors"
-      status_code_pattern = "429"
-      urgent              = true
-      duration            = 300
-      threshold           = 20
-      extra_conditions    = "1=1"
+      name                  = "${var.newrelic_app_name}: too many sustained 429 errors"
+      status_code_pattern   = "429"
+      urgent                = true
+      duration              = 300
+      threshold             = 20
+      extra_nrql_conditions = "1=1"
     },
     {
       name                = "${var.newrelic_app_name}: too many sustained 5xx errors"
