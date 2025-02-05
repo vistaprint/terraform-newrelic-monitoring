@@ -14,7 +14,7 @@ provider "newrelic" {
 
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "2.0.0"
+  version = "3.0.0"
 
   newrelic_account_id = Your New Relic account id
 
@@ -24,17 +24,23 @@ module "newrelic_monitoring" {
 }
 ```
 
-See [variables.tf](./variables.tf) for more information on the input variables that the module accepts. For instance, the default values for an alert's duration and threshold can be overridden. The following example shows how to do so:
+See [variables.tf](./variables.tf) for more information on the input variables that the module accepts. For instance, to enable 4xx alerts on a given endpoint you can do:
 
 ```hcl
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "1.0.0"
+  version = "3.0.0"
 
   # some fields ommitted (see previous example)
-
-  alert_error_rate_5xx_duration  = 600 # seconds
-  alert_error_rate_5xx_threshold = 5  # percentage
+  status_code_alerts = [
+    {
+      name                = "Your app name: too many sustained 4xx errors"
+      status_code_pattern = "4%"
+      urgent              = false
+      duration            = 300
+      threshold           = 30
+    }
+  ]  
 }
 ```
 
