@@ -24,12 +24,28 @@ module "newrelic_monitoring" {
 }
 ```
 
-See [variables.tf](./variables.tf) for more information on the input variables that the module accepts. For instance, to enable 4xx alerts on a given endpoint you can do:
+See [variables.tf](./variables.tf) for more information on the input variables that the module accepts. For instance, the default values for an alert's duration and threshold can be overridden. The following example shows how to do so:
 
 ```hcl
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "3.0.0"
+  version = ">= 3.0.0, < 4.0.0"
+
+  # some fields ommitted (see previous example)
+  
+  alert_high_latency_urgent_duration     = 350 # milliseconds
+  alert_high_latency_non_urgent_duration = 400  # seconds
+}
+```
+
+### Defining alerts on status codes
+
+To enable alerts for status codes, you need to use the `status_code_alerts` variable. For instance, if you want to enable them for 4xx errors, you can do:
+
+```hcl
+module "newrelic_monitoring" {
+  source  = "vistaprint/monitoring/newrelic"
+  version = ">= 3.0.0, < 4.0.0"
 
   # some fields ommitted (see previous example)
   status_code_alerts = [
