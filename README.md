@@ -47,7 +47,8 @@ module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
   version = ">= 3.0.0, < 4.0.0"
 
-  # some fields ommitted (see previous example)
+  # some fields ommitted (see first example)
+
   status_code_alerts = [
     {
       name                = "Your app name: too many sustained 4xx errors"
