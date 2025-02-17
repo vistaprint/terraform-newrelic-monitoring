@@ -14,7 +14,7 @@ provider "newrelic" {
 
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "3.0.0"
+  version = ">= 3.0.0, < 4.0.0"
 
   newrelic_account_id = Your New Relic account id
 
@@ -33,8 +33,8 @@ module "newrelic_monitoring" {
 
   # some fields ommitted (see previous example)
   
-  alert_high_latency_urgent_duration     = 350 # milliseconds
-  alert_high_latency_non_urgent_duration = 400  # seconds
+  alert_high_latency_urgent_duration     = 350 # seconds
+  alert_high_latency_non_urgent_duration = 400 # seconds
 }
 ```
 
