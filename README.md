@@ -33,8 +33,8 @@ module "newrelic_monitoring" {
 
   # some fields ommitted (see previous example)
   
-  alert_high_latency_urgent_duration     = 350 # seconds
-  alert_high_latency_non_urgent_duration = 400 # seconds
+  alert_high_latency_urgent_duration  = 350  # seconds
+  alert_high_latency_urgent_threshold = 1500 # milliseconds
 }
 ```
 
