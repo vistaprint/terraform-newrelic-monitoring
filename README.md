@@ -14,7 +14,7 @@ provider "newrelic" {
 
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "2.0.0"
+  version = ">= 3.0.0, < 4.0.0"
 
   newrelic_account_id = Your New Relic account id
 
@@ -29,12 +29,35 @@ See [variables.tf](./variables.tf) for more information on the input variables t
 ```hcl
 module "newrelic_monitoring" {
   source  = "vistaprint/monitoring/newrelic"
-  version = "1.0.0"
+  version = ">= 3.0.0, < 4.0.0"
 
   # some fields ommitted (see previous example)
+  
+  alert_high_latency_urgent_duration  = 350  # seconds
+  alert_high_latency_urgent_threshold = 1500 # milliseconds
+}
+```
 
-  alert_error_rate_5xx_duration  = 600 # seconds
-  alert_error_rate_5xx_threshold = 5  # percentage
+### Defining alerts on status codes
+
+To enable alerts for status codes, you need to use the `status_code_alerts` variable. For instance, if you want to enable them for 4xx errors, you can do:
+
+```hcl
+module "newrelic_monitoring" {
+  source  = "vistaprint/monitoring/newrelic"
+  version = ">= 3.0.0, < 4.0.0"
+
+  # some fields ommitted (see first example)
+
+  status_code_alerts = [
+    {
+      name                = "Your app name: too many sustained 4xx errors"
+      status_code_pattern = "4%"
+      urgent              = false
+      duration            = 300
+      threshold           = 30
+    }
+  ]  
 }
 ```
 

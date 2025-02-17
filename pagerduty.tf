@@ -82,6 +82,8 @@ resource "newrelic_notification_channel" "pagerduty_non_urgent_channel" {
 }
 
 resource "newrelic_workflow" "non_urgent_workflow" {
+  count = var.enable_pagerduty_notifications ? 1 : 0
+
   name                  = "${var.newrelic_app_name}: PagerDuty Non Urgent Workflow"
   muting_rules_handling = "NOTIFY_ALL_ISSUES"
 
@@ -102,6 +104,8 @@ resource "newrelic_workflow" "non_urgent_workflow" {
 }
 
 resource "newrelic_workflow" "urgent_workflow" {
+  count = var.enable_pagerduty_notifications ? 1 : 0
+
   name                  = "${var.newrelic_app_name}: PagerDuty Urgent Workflow"
   muting_rules_handling = "NOTIFY_ALL_ISSUES"
 
