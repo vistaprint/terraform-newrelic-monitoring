@@ -49,7 +49,7 @@ variable "alert_health_check_fill_option" {
 
 variable "alert_health_check_fill_value" {
   type        = number
-  default     = 0
+  default     = null
   description = "Fill value when alert_health_check_fill_option is 'static'"
 }
 
@@ -113,7 +113,7 @@ variable "alert_error_rate_fill_option" {
 
 variable "alert_error_rate_fill_value" {
   type        = number
-  default     = 0
+  default     = null
   description = "Fill value when alert_error_rate_fill_option is 'static'"
 }
 
@@ -178,7 +178,7 @@ variable "alert_high_latency_urgent_fill_option" {
 
 variable "alert_high_latency_urgent_fill_value" {
   type        = number
-  default     = 0
+  default     = null
   description = "Fill value when alert_high_latency_urgent_fill_option is 'static'"
 }
 
@@ -202,7 +202,7 @@ variable "alert_high_latency_non_urgent_fill_option" {
 
 variable "alert_high_latency_non_urgent_fill_value" {
   type        = number
-  default     = 0
+  default     = null
   description = "Fill value when alert_high_latency_non_urgent_fill_option is 'static'"
 }
 
