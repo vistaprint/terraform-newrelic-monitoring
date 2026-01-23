@@ -13,6 +13,8 @@ module "newrelic_monitoring" {
       urgent              = false
       duration            = 300
       threshold           = 30
+      fill_option         = "static"
+      fill_value          = 0
     },
     {
       name                  = "${var.newrelic_app_name}: too many sustained 429 errors"

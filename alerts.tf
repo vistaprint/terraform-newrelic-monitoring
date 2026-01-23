@@ -36,6 +36,16 @@ resource "newrelic_nrql_alert_condition" "health_check" {
   aggregation_delay  = 180
   slide_by           = 30
 
+  fill_option = var.alert_health_check_fill_option
+  fill_value  = var.alert_health_check_fill_value
+
+  lifecycle {
+    precondition {
+      condition     = var.alert_health_check_fill_option != "static" || var.alert_health_check_fill_value != null
+      error_message = "alert_health_check_fill_value must be set when alert_health_check_fill_option is 'static'"
+    }
+  }
+
   violation_time_limit_seconds = 86400
 
   critical {
@@ -67,6 +77,16 @@ resource "newrelic_nrql_alert_condition" "error_rate" {
   aggregation_method = "event_flow"
   aggregation_delay  = 180
   slide_by           = 30
+
+  fill_option = var.alert_error_rate_fill_option
+  fill_value  = var.alert_error_rate_fill_value
+
+  lifecycle {
+    precondition {
+      condition     = var.alert_error_rate_fill_option != "static" || var.alert_error_rate_fill_value != null
+      error_message = "alert_error_rate_fill_value must be set when alert_error_rate_fill_option is 'static'"
+    }
+  }
 
   violation_time_limit_seconds = 86400
 
@@ -108,6 +128,16 @@ resource "newrelic_nrql_alert_condition" "high_latency_urgent" {
   aggregation_delay  = 180
   slide_by           = 30
 
+  fill_option = var.alert_high_latency_urgent_fill_option
+  fill_value  = var.alert_high_latency_urgent_fill_value
+
+  lifecycle {
+    precondition {
+      condition     = var.alert_high_latency_urgent_fill_option != "static" || var.alert_high_latency_urgent_fill_value != null
+      error_message = "alert_high_latency_urgent_fill_value must be set when alert_high_latency_urgent_fill_option is 'static'"
+    }
+  }
+
   violation_time_limit_seconds = 86400
 
   critical {
@@ -139,6 +169,16 @@ resource "newrelic_nrql_alert_condition" "status_code_error_rate" {
   aggregation_method = "event_flow"
   aggregation_delay  = 180
   slide_by           = 30
+
+  fill_option = each.value.fill_option
+  fill_value  = each.value.fill_value
+
+  lifecycle {
+    precondition {
+      condition     = each.value.fill_option != "static" || each.value.fill_value != null
+      error_message = "fill_value must be set when fill_option is 'static' for alert: ${each.value.name}"
+    }
+  }
 
   violation_time_limit_seconds = 86400
 
@@ -180,6 +220,16 @@ resource "newrelic_nrql_alert_condition" "high_latency_non_urgent" {
   aggregation_method = "event_flow"
   aggregation_delay  = 180
   slide_by           = 30
+
+  fill_option = var.alert_high_latency_non_urgent_fill_option
+  fill_value  = var.alert_high_latency_non_urgent_fill_value
+
+  lifecycle {
+    precondition {
+      condition     = var.alert_high_latency_non_urgent_fill_option != "static" || var.alert_high_latency_non_urgent_fill_value != null
+      error_message = "alert_high_latency_non_urgent_fill_value must be set when alert_high_latency_non_urgent_fill_option is 'static'"
+    }
+  }
 
   violation_time_limit_seconds = 86400
 

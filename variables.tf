@@ -41,6 +41,18 @@ variable "alert_health_check_duration" {
   description = "How long the synthetics monitor check must fail before an alert is triggered (in seconds)"
 }
 
+variable "alert_health_check_fill_option" {
+  type        = string
+  default     = null
+  description = "Fill option for health check alert to handle gaps in data. Options: 'none', 'last_value', 'static'"
+}
+
+variable "alert_health_check_fill_value" {
+  type        = number
+  default     = null
+  description = "Fill value when alert_health_check_fill_option is 'static'"
+}
+
 variable "runbook_url" {
   type        = string
   default     = null
@@ -93,6 +105,18 @@ variable "alert_error_rate_threshold" {
   description = "Error threshold (in percentage)"
 }
 
+variable "alert_error_rate_fill_option" {
+  type        = string
+  default     = null
+  description = "Fill option for error rate alert to handle gaps in data. Options: 'none', 'last_value', 'static'"
+}
+
+variable "alert_error_rate_fill_value" {
+  type        = number
+  default     = null
+  description = "Fill value when alert_error_rate_fill_option is 'static'"
+}
+
 variable "response_status_variable_name" {
   type        = string
   default     = "response.status"
@@ -114,6 +138,8 @@ variable "status_code_alerts" {
     duration              = number
     threshold             = number
     extra_nrql_conditions = optional(string)
+    fill_option           = optional(string)
+    fill_value            = optional(number)
   }))
 
   nullable = true
@@ -127,6 +153,8 @@ variable "status_code_alerts" {
     `duration`: the number of seconds that the threshold needs to be exceeded before triggering the alert.
     `threshold`: maximum percentage of requests that are allowed to result in the specified status code before the alert triggers.
     `extra_nrql_conditions`: extra filters to add to the alert (optional)
+    `fill_option`: fill option for handling gaps in data (optional). Options: "none", "last_value", "static"
+    `fill_value`: fill value when fill_option is "static" (optional, defaults to 0)
   EOT
 }
 
@@ -142,6 +170,18 @@ variable "alert_high_latency_urgent_threshold" {
   description = "Latency threshold (in milliseconds)"
 }
 
+variable "alert_high_latency_urgent_fill_option" {
+  type        = string
+  default     = null
+  description = "Fill option for high latency urgent alert to handle gaps in data. Options: 'none', 'last_value', 'static'"
+}
+
+variable "alert_high_latency_urgent_fill_value" {
+  type        = number
+  default     = null
+  description = "Fill value when alert_high_latency_urgent_fill_option is 'static'"
+}
+
 variable "alert_high_latency_non_urgent_duration" {
   type        = number
   default     = 300
@@ -152,6 +192,18 @@ variable "alert_high_latency_non_urgent_threshold" {
   type        = number
   default     = 1000
   description = "Latency threshold (in milliseconds)"
+}
+
+variable "alert_high_latency_non_urgent_fill_option" {
+  type        = string
+  default     = null
+  description = "Fill option for high latency non-urgent alert to handle gaps in data. Options: 'none', 'last_value', 'static'"
+}
+
+variable "alert_high_latency_non_urgent_fill_value" {
+  type        = number
+  default     = null
+  description = "Fill value when alert_high_latency_non_urgent_fill_option is 'static'"
 }
 
 variable "create_default_slos" {
