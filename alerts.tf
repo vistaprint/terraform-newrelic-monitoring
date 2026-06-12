@@ -81,10 +81,21 @@ resource "newrelic_nrql_alert_condition" "error_rate" {
   fill_option = var.alert_error_rate_fill_option
   fill_value  = var.alert_error_rate_fill_value
 
+  type               = var.alert_error_rate_type
+  baseline_direction = var.alert_error_rate_type == "baseline" ? var.alert_error_rate_baseline_direction : null
+
   lifecycle {
     precondition {
       condition     = var.alert_error_rate_fill_option != "static" || var.alert_error_rate_fill_value != null
       error_message = "alert_error_rate_fill_value must be set when alert_error_rate_fill_option is 'static'"
+    }
+    precondition {
+      condition     = contains(["static", "baseline"], var.alert_error_rate_type)
+      error_message = "alert_error_rate_type must be 'static' or 'baseline'"
+    }
+    precondition {
+      condition     = var.alert_error_rate_type != "baseline" || var.alert_error_rate_baseline_direction != null
+      error_message = "alert_error_rate_baseline_direction must be set when alert_error_rate_type is 'baseline'"
     }
   }
 
@@ -173,10 +184,21 @@ resource "newrelic_nrql_alert_condition" "status_code_error_rate" {
   fill_option = each.value.fill_option
   fill_value  = each.value.fill_value
 
+  type               = each.value.type
+  baseline_direction = each.value.type == "baseline" ? each.value.baseline_direction : null
+
   lifecycle {
     precondition {
       condition     = each.value.fill_option != "static" || each.value.fill_value != null
       error_message = "fill_value must be set when fill_option is 'static' for alert: ${each.value.name}"
+    }
+    precondition {
+      condition     = contains(["static", "baseline"], each.value.type)
+      error_message = "type must be 'static' or 'baseline' for alert: ${each.value.name}"
+    }
+    precondition {
+      condition     = each.value.type != "baseline" || each.value.baseline_direction != null
+      error_message = "baseline_direction must be set when type is 'baseline' for alert: ${each.value.name}"
     }
   }
 

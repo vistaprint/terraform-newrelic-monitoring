@@ -117,6 +117,18 @@ variable "alert_error_rate_fill_value" {
   description = "Fill value when alert_error_rate_fill_option is 'static'"
 }
 
+variable "alert_error_rate_type" {
+  type        = string
+  default     = "static"
+  description = "Type of the error rate alert condition. Options: 'static', 'baseline'"
+}
+
+variable "alert_error_rate_baseline_direction" {
+  type        = string
+  default     = null
+  description = "Baseline direction for the error rate alert when alert_error_rate_type is 'baseline'. Options: 'lower_only', 'upper_and_lower', 'upper_only'"
+}
+
 variable "response_status_variable_name" {
   type        = string
   default     = "response.status"
@@ -140,6 +152,8 @@ variable "status_code_alerts" {
     extra_nrql_conditions = optional(string)
     fill_option           = optional(string)
     fill_value            = optional(number)
+    type                  = optional(string, "static")
+    baseline_direction    = optional(string)
   }))
 
   nullable = true
@@ -155,6 +169,8 @@ variable "status_code_alerts" {
     `extra_nrql_conditions`: extra filters to add to the alert (optional)
     `fill_option`: fill option for handling gaps in data (optional). Options: "none", "last_value", "static"
     `fill_value`: fill value when fill_option is "static" (optional, defaults to 0)
+    `type`: type of the alert condition (optional, defaults to "static"). Options: "static", "baseline"
+    `baseline_direction`: baseline direction when type is "baseline" (optional). Options: "lower_only", "upper_and_lower", "upper_only"
   EOT
 }
 
