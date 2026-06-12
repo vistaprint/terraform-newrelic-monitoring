@@ -15,6 +15,8 @@ module "newrelic_monitoring" {
       threshold           = 30
       fill_option         = "static"
       fill_value          = 0
+      type                = "baseline"
+      baseline_direction  = "upper_only"
     },
     {
       name                  = "${var.newrelic_app_name}: too many sustained 429 errors"
