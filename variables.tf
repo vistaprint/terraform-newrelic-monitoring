@@ -121,12 +121,22 @@ variable "alert_error_rate_type" {
   type        = string
   default     = "static"
   description = "Type of the error rate alert condition. Options: 'static', 'baseline'"
+
+  validation {
+    condition     = contains(["static", "baseline"], var.alert_error_rate_type)
+    error_message = "alert_error_rate_type must be 'static' or 'baseline'."
+  }
 }
 
 variable "alert_error_rate_baseline_direction" {
   type        = string
   default     = null
   description = "Baseline direction for the error rate alert when alert_error_rate_type is 'baseline'. Options: 'lower_only', 'upper_and_lower', 'upper_only'"
+
+  validation {
+    condition     = var.alert_error_rate_baseline_direction == null || contains(["lower_only", "upper_and_lower", "upper_only"], var.alert_error_rate_baseline_direction)
+    error_message = "alert_error_rate_baseline_direction must be 'lower_only', 'upper_and_lower', or 'upper_only'."
+  }
 }
 
 variable "response_status_variable_name" {
@@ -157,6 +167,16 @@ variable "status_code_alerts" {
   }))
 
   nullable = true
+
+  validation {
+    condition     = var.status_code_alerts == null || alltrue([for alert in var.status_code_alerts : contains(["static", "baseline"], alert.type)])
+    error_message = "Each status_code_alert 'type' must be 'static' or 'baseline'."
+  }
+
+  validation {
+    condition     = var.status_code_alerts == null || alltrue([for alert in var.status_code_alerts : alert.baseline_direction == null || contains(["lower_only", "upper_and_lower", "upper_only"], alert.baseline_direction)])
+    error_message = "Each status_code_alert 'baseline_direction' must be 'lower_only', 'upper_and_lower', or 'upper_only'."
+  }
 
   description = <<-EOT
     List of alerts to be created based on status codes.
