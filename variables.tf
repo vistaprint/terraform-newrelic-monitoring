@@ -45,6 +45,11 @@ variable "alert_health_check_fill_option" {
   type        = string
   default     = null
   description = "Fill option for health check alert to handle gaps in data. Options: 'none', 'last_value', 'static'"
+
+  validation {
+    condition     = var.alert_health_check_fill_option == null || contains(["none", "last_value", "static"], var.alert_health_check_fill_option)
+    error_message = "alert_health_check_fill_option must be 'none', 'last_value', or 'static'."
+  }
 }
 
 variable "alert_health_check_fill_value" {
@@ -109,6 +114,11 @@ variable "alert_error_rate_fill_option" {
   type        = string
   default     = null
   description = "Fill option for error rate alert to handle gaps in data. Options: 'none', 'last_value', 'static'"
+
+  validation {
+    condition     = var.alert_error_rate_fill_option == null || contains(["none", "last_value", "static"], var.alert_error_rate_fill_option)
+    error_message = "alert_error_rate_fill_option must be 'none', 'last_value', or 'static'."
+  }
 }
 
 variable "alert_error_rate_fill_value" {
@@ -178,6 +188,11 @@ variable "status_code_alerts" {
     error_message = "Each status_code_alert 'baseline_direction' must be 'lower_only', 'upper_and_lower', or 'upper_only'."
   }
 
+  validation {
+    condition     = var.status_code_alerts == null || alltrue([for alert in var.status_code_alerts : alert.fill_option == null || contains(["none", "last_value", "static"], alert.fill_option)])
+    error_message = "Each status_code_alert 'fill_option' must be 'none', 'last_value', or 'static'."
+  }
+
   description = <<-EOT
     List of alerts to be created based on status codes.
     `name`: name of the alert
@@ -210,6 +225,11 @@ variable "alert_high_latency_urgent_fill_option" {
   type        = string
   default     = null
   description = "Fill option for high latency urgent alert to handle gaps in data. Options: 'none', 'last_value', 'static'"
+
+  validation {
+    condition     = var.alert_high_latency_urgent_fill_option == null || contains(["none", "last_value", "static"], var.alert_high_latency_urgent_fill_option)
+    error_message = "alert_high_latency_urgent_fill_option must be 'none', 'last_value', or 'static'."
+  }
 }
 
 variable "alert_high_latency_urgent_fill_value" {
@@ -234,6 +254,11 @@ variable "alert_high_latency_non_urgent_fill_option" {
   type        = string
   default     = null
   description = "Fill option for high latency non-urgent alert to handle gaps in data. Options: 'none', 'last_value', 'static'"
+
+  validation {
+    condition     = var.alert_high_latency_non_urgent_fill_option == null || contains(["none", "last_value", "static"], var.alert_high_latency_non_urgent_fill_option)
+    error_message = "alert_high_latency_non_urgent_fill_option must be 'none', 'last_value', or 'static'."
+  }
 }
 
 variable "alert_high_latency_non_urgent_fill_value" {
