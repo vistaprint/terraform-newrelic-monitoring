@@ -289,3 +289,9 @@ variable "availability_slo_target" {
   default     = 99.00
   description = "Target value for availability SLO"
 }
+
+variable "bypass_head_request" {
+  type        = bool
+  default     = false
+  description = "Bypasses the HEAD request on the synthetic monitoring"
+}

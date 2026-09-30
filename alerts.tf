@@ -13,12 +13,13 @@ resource "newrelic_alert_policy" "urgent" {
 resource "newrelic_synthetics_monitor" "health_check" {
   count = var.service_healthcheck_url != null ? 1 : 0
 
-  name             = "${var.newrelic_app_name} Health check"
-  type             = "SIMPLE"
-  uri              = var.service_healthcheck_url
-  period           = "EVERY_MINUTE"
-  status           = "ENABLED"
-  locations_public = ["US_EAST_1", "US_WEST_1", "EU_WEST_1", "EU_WEST_3", "AP_NORTHEAST_1", "AP_SOUTHEAST_2"]
+  name                = "${var.newrelic_app_name} Health check"
+  bypass_head_request = var.bypass_head_request
+  type                = "SIMPLE"
+  uri                 = var.service_healthcheck_url
+  period              = "EVERY_MINUTE"
+  status              = "ENABLED"
+  locations_public    = ["US_EAST_1", "US_WEST_1", "EU_WEST_1", "EU_WEST_3", "AP_NORTHEAST_1", "AP_SOUTHEAST_2"]
 }
 
 resource "newrelic_nrql_alert_condition" "health_check" {
