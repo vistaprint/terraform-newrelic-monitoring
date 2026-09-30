@@ -292,6 +292,6 @@ variable "availability_slo_target" {
 
 variable "bypass_head_request" {
   type        = bool
-  default     = true
+  default     = false
   description = "Bypasses the HEAD request on the synthetic monitoring"
 }
